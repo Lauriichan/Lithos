@@ -1,11 +1,13 @@
 package org.playuniverse.minecraft.core.lithos.command;
 
+import org.pf4j.Extension;
 import org.playuniverse.minecraft.core.lithos.extension.ICommandExtension;
 import org.playuniverse.minecraft.mcs.spigot.command.CommandContext;
 import org.playuniverse.minecraft.mcs.spigot.command.listener.MinecraftInfo;
 import org.playuniverse.minecraft.mcs.spigot.command.nodes.CommandNode;
 import org.playuniverse.minecraft.mcs.spigot.command.nodes.RootNode;
 
+@Extension
 public final class TestCommand implements ICommandExtension {
 
     @Override
