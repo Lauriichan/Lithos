@@ -1,3 +1,0 @@
-main: ${project.groupId}.${project.artifactId}.${project.name}
-name: ${project.name}
-version: ${projectVersion}
