@@ -6,7 +6,7 @@ import org.playuniverse.minecraft.mcs.shaded.syapi.random.RandomNumberGenerator;
 public final class EventInfo {
 
     private final RandomNumberGenerator seedGenerator;
-    private int tickTime; // Time for ticks in 50ms ticks
+    private int tickTime = 1; // Time for ticks in 50ms ticks
 
     public EventInfo(RandomNumberGenerator seedGenerator) {
         this.seedGenerator = seedGenerator;
@@ -21,7 +21,7 @@ public final class EventInfo {
     }
 
     public void setTickTime(int tickTime) {
-        this.tickTime = tickTime;
+        this.tickTime = Math.max(1, tickTime);
     }
 
     public int getTickTime() {

@@ -32,7 +32,7 @@ public final class EventHandler extends Feature implements IListenerExtension {
         wrapper.getModule().getFeatureHandler().register(this);
     }
 
-    boolean register(ITickEvent event) {
+    boolean register(IFeatureEvent event) {
         int size = wrappers.size();
         for (int index = 0; index < size; index++) {
             if (wrappers.get(index).getEvent().getClass() == event.getClass()) {

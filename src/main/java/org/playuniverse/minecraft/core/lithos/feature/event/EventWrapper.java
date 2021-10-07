@@ -1,11 +1,12 @@
 package org.playuniverse.minecraft.core.lithos.feature.event;
 
 import org.playuniverse.minecraft.mcs.shaded.syapi.random.RandomNumberGenerator;
+import org.playuniverse.minecraft.mcs.spigot.utils.general.tick.ITickReceiver;
 import org.playuniverse.minecraft.mcs.spigot.utils.general.tick.Ticker;
 
-public final class EventWrapper implements Comparable<EventWrapper> {
+public final class EventWrapper implements Comparable<EventWrapper>, ITickReceiver {
 
-    private final ITickEvent event;
+    private final IFeatureEvent event;
 
     private final String name;
     private final Ticker ticker;
@@ -15,27 +16,27 @@ public final class EventWrapper implements Comparable<EventWrapper> {
 
     private boolean running = false;
 
-    public EventWrapper(ITickEvent event) {
+    public EventWrapper(IFeatureEvent event) {
         this.event = event;
         this.chance = event.additive(-1);
         this.name = event.getClass().getTypeName();
         this.ticker = new Ticker(name, 50, 100);
         this.ticker.pause();
-        this.ticker.add(event);
+        this.ticker.add(this);
     }
 
     public String getName() {
         return name;
     }
 
-    public ITickEvent getEvent() {
+    protected IFeatureEvent getEvent() {
         return event;
     }
 
     public double getChance() {
         return chance;
     }
-    
+
     public int getPassed() {
         return passed;
     }
@@ -44,11 +45,20 @@ public final class EventWrapper implements Comparable<EventWrapper> {
         return running;
     }
 
-    public void pass() {
+    @Override
+    public void onTick(long deltaTime) {
+        if (event.isOver()) {
+            stop();
+            return;
+        }
+        event.onTick(deltaTime);
+    }
+
+    protected void pass() {
         chance += event.additive(passed);
     }
 
-    public void start(RandomNumberGenerator seedGenerator) {
+    protected void start(RandomNumberGenerator seedGenerator) {
         if (running) {
             return;
         }
