@@ -24,7 +24,6 @@ public final class EventHandler extends Feature implements IListenerExtension {
     private final RandomNumberGenerator eventRandom = NumberGeneratorType.MURMUR.create(System.currentTimeMillis());
     private final RandomNumberGenerator seedRandom = NumberGeneratorType.MURMUR.create(eventRandom.nextLong());
 
-    private final double max = 100000;
     private double chance = 0.1;
     private int passed = 0;
 
@@ -44,7 +43,7 @@ public final class EventHandler extends Feature implements IListenerExtension {
 
     @Override
     protected void onTick(long deltaTime) {
-        if (eventRandom.nextDouble(max) > chance) {
+        if (eventRandom.nextDouble(Double.MAX_VALUE) > chance) {
             chance += additive();
             passed++;
             return;
