@@ -60,7 +60,8 @@ public final class EventHandler extends Feature implements IListenerExtension {
     }
 
     private double additive() {
-        return Math.exp((Math.pow(passed + 2, 0.05)) / (passed * 0.05)) * Math.PI;
+        double c = Math.pow(passed + 2, 0.05);
+        return Math.pow(c, Math.sin(Math.cos(Math.tan(c))));
     }
 
     private EventWrapper nextEvent(RandomNumberGenerator random) {
