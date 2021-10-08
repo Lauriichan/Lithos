@@ -7,7 +7,6 @@ import org.playuniverse.minecraft.core.lithos.Lithos;
 import org.playuniverse.minecraft.core.lithos.feature.Feature;
 import org.playuniverse.minecraft.mcs.shaded.syapi.random.NumberGeneratorType;
 import org.playuniverse.minecraft.mcs.shaded.syapi.random.RandomNumberGenerator;
-import org.playuniverse.minecraft.mcs.spigot.event.base.BukkitEventHandler;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension;
 
 import com.syntaxphoenix.avinity.module.ModuleWrapper;
@@ -89,7 +88,7 @@ public final class EventHandler extends Feature implements IListenerExtension {
      * Unload modules
      */
 
-    @BukkitEventHandler
+    @org.playuniverse.minecraft.mcs.shaded.syapi.event.EventHandler
     public void onModuleDisable(ModuleDisableEvent event) {
         int size = wrappers.size();
         ModuleWrapper<?> wrapper = event.getWrapper();

@@ -67,7 +67,7 @@ public final class BrokenConveyor implements IFeatureEvent {
         Collection<? extends Player> collection = Bukkit.getOnlinePlayers();
         int index = random.nextInt(collection.size());
         Iterator<? extends Player> iterator = collection.iterator();
-        while (index != 0) {
+        while (index-- != 0) {
             iterator.next();
         }
         Location location = iterator.next().getLocation();
