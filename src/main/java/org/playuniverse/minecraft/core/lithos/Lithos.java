@@ -11,10 +11,12 @@ import org.playuniverse.minecraft.mcs.spigot.module.SpigotCoreModule;
 public final class Lithos extends SpigotCoreModule {
 
     private final FeatureHandler featureHandler = new FeatureHandler();
-    private final StructureHandler structureHandler = new StructureHandler(getDataLocation());
+    private StructureHandler structureHandler;
     
     @Override
     protected void onLoad() {
+        structureHandler = new StructureHandler(getDataLocation());
+        
         PlaceholderStore store = getDefaultPlaceholders();
         store.setPlaceholder(Placeholder.of("prefix", "&cLithos &8" + UniCode.ARROWS_RIGHT + "&7"));
     }
