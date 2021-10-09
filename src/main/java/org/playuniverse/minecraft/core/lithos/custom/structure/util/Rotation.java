@@ -1,5 +1,7 @@
 package org.playuniverse.minecraft.core.lithos.custom.structure.util;
 
+import org.bukkit.block.structure.StructureRotation;
+
 public enum Rotation {
 
     NORTH("WEST", "EAST", "SOUTH"),
@@ -39,6 +41,19 @@ public enum Rotation {
             return 2;
         }
         return 3;
+    }
+
+    public static Rotation fromBukkit(StructureRotation rotation) {
+        switch (rotation) {
+        case CLOCKWISE_90:
+            return Rotation.EAST;
+        case CLOCKWISE_180:
+            return Rotation.SOUTH;
+        case COUNTERCLOCKWISE_90:
+            return Rotation.WEST;
+        default:
+            return Rotation.NORTH;
+        }
     }
 
     public static Rotation fromString(String value) {
