@@ -18,15 +18,15 @@ public final class StructureHandler {
     public StructureHandler(File folder) {
         this.folder = new File(folder, "structures");
     }
-    
+
     /*
      * Getter
      */
-    
+
     public File getFolder() {
         return folder;
     }
-    
+
     /*
      * Structure Pools
      */
@@ -54,7 +54,7 @@ public final class StructureHandler {
     public void create(UUID id, Location origin) {
         StructureInfo info = infos.remove(id);
         StructurePool pool = pools.computeIfAbsent(info.getName(), name -> new StructurePool(name));
-        pool.saveStructure(origin, null, null, null);
+        pool.saveStructure(origin, info.getRotation(), info.getFirst(), info.getSecond());
     }
 
 }
