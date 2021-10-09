@@ -7,11 +7,13 @@ import org.playuniverse.minecraft.core.lithos.Lithos;
 import org.playuniverse.minecraft.core.lithos.custom.structure.StructureHandler;
 import org.playuniverse.minecraft.mcs.spigot.event.base.BukkitEventHandler;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension;
+import org.playuniverse.minecraft.mcs.spigot.module.extension.info.EventInfo;
 
 import com.syntaxphoenix.avinity.module.ModuleWrapper;
 import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
+@EventInfo
 public class StructureListener implements IListenerExtension {
 
     private final StructureHandler handler;
