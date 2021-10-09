@@ -65,6 +65,16 @@ public final class StructureCommand implements ICommandExtension {
         String action = reader.readUnquoted();
         Player player = (Player) sender;
         if (action.equalsIgnoreCase("save")) {
+            String rotationRaw = reader.readUnquoted();
+            if (!reader.skipWhitespace().hasNext()) {
+                wrapper.send("$prefix Bitte gebe die Rotation an die du speichern möchtest (NORTH / EAST / SOUTH / WEST)");
+                return;
+            }
+            Rotation rotation = Rotation.fromString(rotationRaw.toUpperCase());
+            if(!rotation.name().equalsIgnoreCase(rotationRaw)) {
+                wrapper.send("$prefix Bitte gebe eine gültige Rotation an (NORTH / EAST / SOUTH / WEST)");
+                return;
+            }
             Block block = player.getTargetBlockExact(4, FluidCollisionMode.NEVER);
             if (block == null || block.getBlockData().getMaterial() != Material.STRUCTURE_BLOCK) {
                 wrapper.send("$prefix Bitte schaue auf einen Structure Block");
@@ -75,7 +85,6 @@ public final class StructureCommand implements ICommandExtension {
                 wrapper.send("$prefix Bitte stelle den Structure Block auf SAVE");
                 return;
             }
-            Rotation rotation = Rotation.fromBukkit(structure.getRotation());
             BlockVector size = structure.getStructureSize();
             BlockVector relative = structure.getRelativePosition();
             Location location = block.getLocation();
