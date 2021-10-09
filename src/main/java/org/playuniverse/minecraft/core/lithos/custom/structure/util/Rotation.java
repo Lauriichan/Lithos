@@ -4,40 +4,42 @@ import org.bukkit.block.structure.StructureRotation;
 
 public enum Rotation {
 
-    NORTH("WEST", "EAST", "SOUTH"),
-    EAST("NORTH", "SOUTH", "WEST"),
-    SOUTH("EAST", "WEST", "NORTH"),
-    WEST("SOUTH", "NORTH", "EAST");
+    NORTH(3, 1, 2),
+    EAST(0, 2, 3),
+    SOUTH(1, 3, 0),
+    WEST(2, 0, 1);
 
-    private final Rotation left, right, mid;
+    private final int left, right, mid;
 
-    private Rotation(String left, String right, String mid) {
-        this.left = Rotation.valueOf(left);
-        this.right = Rotation.valueOf(right);
-        this.mid = Rotation.valueOf(mid);
+    private Rotation(int left, int right, int mid) {
+        this.left = left;
+        this.right = right;
+        this.mid = right;
     }
 
     public Rotation rotate(int amount) {
-        switch (amount % 4) {
+        int id = switch (amount % 4) {
         case 1:
-            return right;
+            yield right;
         case 2:
-            return mid;
+            yield mid;
         case 3:
-            return left;
+            yield left;
         default:
-            return this;
-        }
+            yield -1;
+        };
+        return id == -1 ? this : Rotation.values()[id];
     }
 
     public int rotateTo(Rotation rotation) {
         if (rotation == this) {
             return 0;
         }
-        if (rotation == right) {
+        int id = rotation.ordinal();
+        if (id == right) {
             return 1;
         }
-        if (rotation == mid) {
+        if (id == mid) {
             return 2;
         }
         return 3;

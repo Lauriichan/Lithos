@@ -65,12 +65,12 @@ public final class StructureCommand implements ICommandExtension {
         String action = reader.readUnquoted();
         Player player = (Player) sender;
         if (action.equalsIgnoreCase("save")) {
-            String rotationRaw = reader.readUnquoted();
             if (!reader.skipWhitespace().hasNext()) {
                 wrapper.send("$prefix Bitte gebe die Rotation an die du speichern möchtest (NORTH / EAST / SOUTH / WEST)");
                 return;
             }
-            Rotation rotation = Rotation.fromString(rotationRaw.toUpperCase());
+            String rotationRaw = reader.readUnquoted();
+            Rotation rotation = Rotation.fromString(rotationRaw);
             if(!rotation.name().equalsIgnoreCase(rotationRaw)) {
                 wrapper.send("$prefix Bitte gebe eine gültige Rotation an (NORTH / EAST / SOUTH / WEST)");
                 return;
