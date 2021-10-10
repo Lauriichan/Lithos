@@ -34,9 +34,14 @@ public final class Lithos extends SpigotCoreModule {
         registerExtensions();
         loadData();
     }
+    
+    @Override
+    protected void onUnload() {
+        saveData();
+    }
 
     /*
-     * 
+     * On Load
      */
 
     private void registerExtensions() {
@@ -58,9 +63,17 @@ public final class Lithos extends SpigotCoreModule {
         structureHandler.load();
         economyHandler.load();
     }
+    
+    /*
+     * On Unload
+     */
+    
+    private void saveData() {
+        economyHandler.save();
+    }
 
     /*
-     * 
+     * Getter
      */
 
     public FeatureHandler getFeatureHandler() {

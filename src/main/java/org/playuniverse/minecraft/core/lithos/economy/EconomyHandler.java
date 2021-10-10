@@ -13,9 +13,11 @@ import org.bukkit.inventory.ItemStack;
 import org.playuniverse.minecraft.core.lithos.io.IOHandler;
 import org.playuniverse.minecraft.core.lithos.util.InventoryHelper;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtCompound;
+import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtNamedTag;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtTag;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtType;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.tools.NbtDeserializer;
+import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.tools.NbtSerializer;
 import org.playuniverse.minecraft.mcs.shaded.syapi.utils.java.Files;
 import org.playuniverse.minecraft.mcs.spigot.bukkit.inventory.item.ItemEditor;
 
@@ -46,6 +48,7 @@ public final class EconomyHandler {
      */
 
     public void load() {
+        banks.clear();
         for (final File file : folder.listFiles()) {
             if (!file.getName().endsWith(".nbt")) {
                 continue;
@@ -71,7 +74,19 @@ public final class EconomyHandler {
     }
 
     public void save() {
-
+        for (EconomyBank bank : banks.values()) {
+            File file = new File(bank.getUniqueId().toString() + ".nbt");
+            Files.createFile(file);
+            NbtCompound compound = ioHandler.serialize(bank);
+            if (compound == null) {
+                continue;
+            }
+            try {
+                NbtSerializer.COMPRESSED.toFile(new NbtNamedTag("bank", compound), file);
+            } catch (IOException e) {
+                // Ignore for now
+            }
+        }
     }
 
     /*
