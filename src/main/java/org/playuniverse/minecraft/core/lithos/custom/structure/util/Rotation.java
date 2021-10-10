@@ -14,7 +14,7 @@ public enum Rotation {
     private Rotation(int left, int right, int mid) {
         this.left = left;
         this.right = right;
-        this.mid = right;
+        this.mid = mid;
     }
 
     public Rotation rotate(int amount) {

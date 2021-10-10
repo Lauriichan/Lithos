@@ -63,7 +63,7 @@ public final class StructurePool {
                     if (data == null) {
                         continue;
                     }
-                    map.put(origin.add(x, y, z), StructureBlockData.of(data));
+                    map.put(origin.subtract(x, y, z).inverse(), StructureBlockData.of(data));
                 }
             }
         }
