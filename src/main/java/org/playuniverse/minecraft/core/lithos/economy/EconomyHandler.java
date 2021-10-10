@@ -64,7 +64,7 @@ public final class EconomyHandler {
                 // Ignore for now
                 continue;
             }
-            final Object object = ioHandler.deserialize(compound);
+            final Object object = ioHandler.deserializeNbt(compound);
             if (!(object instanceof EconomyBank)) {
                 continue;
             }
@@ -77,7 +77,7 @@ public final class EconomyHandler {
         for (EconomyBank bank : banks.values()) {
             File file = new File(bank.getUniqueId().toString() + ".nbt");
             Files.createFile(file);
-            NbtCompound compound = ioHandler.serialize(bank);
+            NbtCompound compound = ioHandler.serializeNbt(bank);
             if (compound == null) {
                 continue;
             }

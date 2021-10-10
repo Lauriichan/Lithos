@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Function;
 
+import org.playuniverse.minecraft.mcs.shaded.syapi.json.JsonObject;
+import org.playuniverse.minecraft.mcs.shaded.syapi.json.JsonValue;
+import org.playuniverse.minecraft.mcs.shaded.syapi.json.ValueType;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtCompound;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtTag;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtType;
@@ -94,7 +97,7 @@ public final class IOHandler {
         return null;
     }
 
-    public NbtCompound serialize(final Object object) {
+    public NbtCompound serializeNbt(final Object object) {
         final Container<String> id = Container.of();
         final NbtTag tag = convertImpl(object, NbtTag.class, id);
         if (id.isEmpty()) {
@@ -106,12 +109,33 @@ public final class IOHandler {
         return compound;
     }
 
-    public Object deserialize(final NbtCompound compound) {
+    public Object deserializeNbt(final NbtCompound compound) {
         if (!compound.hasKey("id", NbtType.STRING) || !compound.hasKey("data")) {
             return null;
         }
         final String id = compound.getString("id");
         final NbtTag data = compound.get("data");
+        return convert(id, data);
+    }
+
+    public JsonObject serializeJson(final Object object) {
+        final Container<String> id = Container.of();
+        final JsonValue<?> tag = convertImpl(object, JsonValue.class, id);
+        if (id.isEmpty()) {
+            return null;
+        }
+        final JsonObject jsonObject = new JsonObject();
+        jsonObject.set("id", id.get());
+        jsonObject.set("data", tag);
+        return jsonObject;
+    }
+
+    public Object deserializeJson(final JsonObject object) {
+        if (!object.has("id", ValueType.STRING) || !object.has("data")) {
+            return null;
+        }
+        final String id = object.get("id").getValue().toString();
+        final JsonValue<?> data = object.get("data");
         return convert(id, data);
     }
 

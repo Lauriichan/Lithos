@@ -70,7 +70,7 @@ public final class StructureHandler {
         final StructureInfo info = infos.remove(id);
         final StructurePool pool = pools.computeIfAbsent(info.getName(), StructurePool::new);
         pool.saveStructure(origin, info.getRotation(), info.getFirst(), info.getSecond());
-        final NbtCompound compound = ioHandler.serialize(pool);
+        final NbtCompound compound = ioHandler.serializeNbt(pool);
         try {
             NbtSerializer.COMPRESSED.toFile(new NbtNamedTag(info.getName(), compound), new File(folder, info.getName() + ".nbt"));
         } catch (final IOException e) {
@@ -83,6 +83,7 @@ public final class StructureHandler {
      */
 
     public void load() {
+        pools.clear();
         for (final File file : folder.listFiles()) {
             if (!file.getName().endsWith(".nbt")) {
                 continue;
@@ -98,7 +99,7 @@ public final class StructureHandler {
                 // Ignore for now
                 continue;
             }
-            final Object object = ioHandler.deserialize(compound);
+            final Object object = ioHandler.deserializeNbt(compound);
             if (!(object instanceof StructurePool)) {
                 continue;
             }

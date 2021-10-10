@@ -37,11 +37,11 @@ public final class StructureListener implements IListenerExtension {
         try {
             handler.create(event.getPlayer().getUniqueId(), event.getClickedBlock().getLocation());
         } catch (final Exception exp) { // Normally nothing should happen but in case of smth
-            message.send("$prefix Something went wrong while saving your structure!");
+            message.send("$prefix Etwas lief beim Speichern der Struktur falsch!");
             module.getLogger().log(LogTypeId.WARNING, exp);
             return;
         }
-        message.send("$prefix Successfully saved structure!");
+        message.send("$prefix Die Struktur wurde erfolgreich gespeichert!");
     }
 
 }

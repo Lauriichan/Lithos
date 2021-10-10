@@ -34,7 +34,7 @@ public final class EventHandler extends Feature {
 
     @Override
     protected void onTick(final long deltaTime) {
-        if (eventRandom.nextDouble(Double.MAX_VALUE) > chance) {
+        if (eventRandom.nextInt() > chance) {
             chance += additive();
             passed++;
             return;
@@ -64,6 +64,9 @@ public final class EventHandler extends Feature {
             }
             indexMap.put(max, index);
             max += wrapper.getChance();
+        }
+        if(indexMap.isEmpty()) {
+            return null;
         }
         final int idx = indexMap.floorEntry(random.nextDouble(max)).getValue();
         indexMap.clear();
