@@ -1,15 +1,20 @@
 package org.playuniverse.minecraft.core.lithos.command;
 
+import java.util.HashMap;
+
+import org.bukkit.Bukkit;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Structure;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.structure.UsageMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockVector;
 import org.playuniverse.minecraft.core.lithos.Lithos;
+import org.playuniverse.minecraft.core.lithos.custom.structure.StructureBlockData;
 import org.playuniverse.minecraft.core.lithos.custom.structure.StructureHandler;
 import org.playuniverse.minecraft.core.lithos.custom.structure.util.Position;
 import org.playuniverse.minecraft.core.lithos.custom.structure.util.Rotation;
@@ -19,6 +24,7 @@ import org.playuniverse.minecraft.mcs.spigot.command.listener.MinecraftInfo;
 import org.playuniverse.minecraft.mcs.spigot.command.nodes.CommandNode;
 import org.playuniverse.minecraft.mcs.spigot.command.nodes.RootNode;
 import org.playuniverse.minecraft.mcs.spigot.language.MessageWrapper;
+import org.playuniverse.minecraft.mcs.spigot.language.placeholder.Placeholder;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.ICommandExtension;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.info.CommandInfo;
 
@@ -63,18 +69,18 @@ public final class StructureCommand implements ICommandExtension {
             return;
         }
         String action = reader.readUnquoted();
+        if (!reader.skipWhitespace().hasNext()) {
+            wrapper.send("$prefix Bitte gebe die Rotation an die du speichern möchtest (NORTH / EAST / SOUTH / WEST)");
+            return;
+        }
+        String rotationRaw = reader.readUnquoted();
+        Rotation rotation = Rotation.fromString(rotationRaw);
+        if (!rotation.name().equalsIgnoreCase(rotationRaw)) {
+            wrapper.send("$prefix Bitte gebe eine gültige Rotation an (NORTH / EAST / SOUTH / WEST)");
+            return;
+        }
         Player player = (Player) sender;
         if (action.equalsIgnoreCase("save")) {
-            if (!reader.skipWhitespace().hasNext()) {
-                wrapper.send("$prefix Bitte gebe die Rotation an die du speichern möchtest (NORTH / EAST / SOUTH / WEST)");
-                return;
-            }
-            String rotationRaw = reader.readUnquoted();
-            Rotation rotation = Rotation.fromString(rotationRaw);
-            if(!rotation.name().equalsIgnoreCase(rotationRaw)) {
-                wrapper.send("$prefix Bitte gebe eine gültige Rotation an (NORTH / EAST / SOUTH / WEST)");
-                return;
-            }
             Block block = player.getTargetBlockExact(4, FluidCollisionMode.NEVER);
             if (block == null || block.getBlockData().getMaterial() != Material.STRUCTURE_BLOCK) {
                 wrapper.send("$prefix Bitte schaue auf einen Structure Block");
@@ -100,7 +106,27 @@ public final class StructureCommand implements ICommandExtension {
             wrapper.send("$prefix Bitte gebe eine gültige Aktion an (save / paste)");
             return;
         }
-
+        if (!handler.has(name)) {
+            wrapper.send(new Placeholder[] {
+                Placeholder.of("name", name)
+            }, "$prefix Die Struktur '$name' existiert nicht!");
+            return;
+        }
+        wrapper.send(new Placeholder[] {
+            Placeholder.of("name", name)
+        }, "$prefix Die Struktur '$name' wird geladen...");
+        HashMap<Position, StructureBlockData> data = new HashMap<>(handler.get(name).getStructure(rotation).getMap()); // Copy in case of
+                                                                                                                       // changes
+        HashMap<String, BlockData> bukkit = new HashMap<>();
+        Location location = player.getLocation();
+        Position origin = new Position(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        for (Position position : data.keySet()) {
+            BlockData blockData = bukkit.computeIfAbsent(data.get(position).asBlockData(), Bukkit::createBlockData);
+            location.getWorld().getBlockAt(position.getX(origin), position.getY(origin), position.getZ(origin)).setBlockData(blockData);
+        }
+        wrapper.send(new Placeholder[] {
+            Placeholder.of("name", name)
+        }, "$prefix Die Struktur '$name' wurde erfolgreich geladen!");
     }
 
 }

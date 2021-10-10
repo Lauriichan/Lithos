@@ -34,6 +34,18 @@ public final class Position {
         return z;
     }
 
+    public int getX(Position other) {
+        return x + other.x;
+    }
+
+    public int getY(Position other) {
+        return y + other.y;
+    }
+
+    public int getZ(Position other) {
+        return z + other.z;
+    }
+
     public Position add(int x, int y, int z) {
         return new Position(this.x + x, this.y + y, this.z + z);
     }
