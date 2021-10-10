@@ -41,6 +41,10 @@ public final class StructureHandler {
     /*
      * Structure Pools
      */
+    
+    public String[] getNames() {
+        return pools.keySet().toArray(String[]::new);
+    }
 
     public StructurePool get(String name) {
         return pools.get(name.toLowerCase());

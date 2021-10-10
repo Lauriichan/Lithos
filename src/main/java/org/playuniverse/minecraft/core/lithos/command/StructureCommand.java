@@ -1,6 +1,9 @@
 package org.playuniverse.minecraft.core.lithos.command;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.FluidCollisionMode;
@@ -43,11 +46,10 @@ public final class StructureCommand implements ICommandExtension {
     @Override
     @CommandInfo(name = "structure")
     public RootNode<MinecraftInfo> buildRoot(String name) {
-
-        return new CommandNode<>(name, this::structure);
+        return new CommandNode<>(name, this::execute, this::complete);
     }
 
-    public void structure(CommandContext<MinecraftInfo> context) {
+    public void execute(CommandContext<MinecraftInfo> context) {
         MessageWrapper<?> wrapper = context.getSource().getReceiver();
         CommandSender sender = context.getSource().getSender();
         if (!sender.hasPermission("lithos.structure")) {
@@ -127,6 +129,30 @@ public final class StructureCommand implements ICommandExtension {
         wrapper.send(new Placeholder[] {
             Placeholder.of("name", name)
         }, "$prefix Die Struktur '$name' wurde erfolgreich geladen!");
+    }
+    
+    public List<String> complete(CommandContext<MinecraftInfo> context) {
+        ArrayList<String> list = new ArrayList<>();
+        StringReader reader = context.getReader();
+        reader.skipWhitespace().readUnquoted();
+        if(!reader.hasNext()) {
+            Collections.addAll(list, handler.getNames());
+            return list;
+        }
+        reader.skipWhitespace().readUnquoted();
+        if(!reader.hasNext()) {
+            list.add("save");
+            list.add("paste");
+            return list;
+        }
+        reader.skipWhitespace().readUnquoted();
+        if(reader.hasNext()) {
+           return list; 
+        }
+        for(Rotation rotation : Rotation.values()) {
+            list.add(rotation.name());
+        }
+        return list;
     }
 
 }
