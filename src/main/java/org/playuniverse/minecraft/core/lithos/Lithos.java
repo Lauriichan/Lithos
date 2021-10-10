@@ -28,6 +28,7 @@ public final class Lithos extends SpigotCoreModule {
     @Override
     protected void onServerReady() {
         registerExtensions();
+        loadData();
     }
 
     /*
@@ -47,6 +48,10 @@ public final class Lithos extends SpigotCoreModule {
         getLogger().log("Registering io converter...");
         result = IDataExtension.register(this);
         getLogger().log(String.format("Registered %s of %s io converter", result[0], result[1]));
+    }
+    
+    private void loadData() {
+        structureHandler.load();
     }
 
     /*

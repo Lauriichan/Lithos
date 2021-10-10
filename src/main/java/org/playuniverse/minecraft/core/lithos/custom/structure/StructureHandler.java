@@ -28,7 +28,6 @@ public final class StructureHandler {
     public StructureHandler(IOHandler ioHandler, File folder) {
         this.ioHandler = ioHandler;
         this.folder = Files.createFolder(new File(folder, "structures"));
-        load();
     }
 
     /*
@@ -79,7 +78,7 @@ public final class StructureHandler {
      * Load
      */
 
-    private void load() {
+    public void load() {
         for (File file : folder.listFiles()) {
             if (!file.getName().endsWith(".nbt")) {
                 continue;
