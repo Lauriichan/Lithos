@@ -22,8 +22,8 @@ public final class EventHandler extends Feature {
     private double chance = 0.1;
     private int passed = 0;
 
-    boolean register(IFeatureEventExtension event) {
-        int size = wrappers.size();
+    boolean register(final IFeatureEventExtension event) {
+        final int size = wrappers.size();
         for (int index = 0; index < size; index++) {
             if (wrappers.get(index).getEvent().getClass() == event.getClass()) {
                 return false;
@@ -33,13 +33,13 @@ public final class EventHandler extends Feature {
     }
 
     @Override
-    protected void onTick(long deltaTime) {
+    protected void onTick(final long deltaTime) {
         if (eventRandom.nextDouble(Double.MAX_VALUE) > chance) {
             chance += additive();
             passed++;
             return;
         }
-        EventWrapper wrapper = nextEvent(eventRandom);
+        final EventWrapper wrapper = nextEvent(eventRandom);
         if (wrapper == null) {
             passed++;
             return;
@@ -50,22 +50,22 @@ public final class EventHandler extends Feature {
     }
 
     private double additive() {
-        double c = Math.pow(passed + 2, 0.05);
+        final double c = Math.pow(passed + 2, 0.05);
         return Math.pow(c, Math.sin(Math.cos(Math.tan(c))));
     }
 
-    private EventWrapper nextEvent(RandomNumberGenerator random) {
-        int size = wrappers.size();
+    private EventWrapper nextEvent(final RandomNumberGenerator random) {
+        final int size = wrappers.size();
         double max = 0;
         for (int index = 0; index < size; index++) {
-            EventWrapper wrapper = wrappers.get(index);
+            final EventWrapper wrapper = wrappers.get(index);
             if (wrapper.isRunning()) {
                 continue;
             }
             indexMap.put(max, index);
             max += wrapper.getChance();
         }
-        int idx = indexMap.floorEntry(random.nextDouble(max)).getValue();
+        final int idx = indexMap.floorEntry(random.nextDouble(max)).getValue();
         indexMap.clear();
         for (int index = 0; index < size; index++) {
             if (idx == index) {
@@ -81,10 +81,10 @@ public final class EventHandler extends Feature {
      */
 
     @Override
-    public void onModuleDisable(ModuleWrapper<?> wrapper) {
+    public void onModuleDisable(final ModuleWrapper<?> wrapper) {
         int size = wrappers.size();
         for (int index = 0; index < size; index++) {
-            EventWrapper eventWrapper = wrappers.get(index);
+            final EventWrapper eventWrapper = wrappers.get(index);
             if (!wrapper.isFromModule(eventWrapper.getEvent().getClass())) {
                 continue;
             }

@@ -18,7 +18,7 @@ public final class StructurePool {
 
     private Rotation baseRotation;
 
-    public StructurePool(String name) {
+    public StructurePool(final String name) {
         this.name = name;
     }
 
@@ -30,8 +30,8 @@ public final class StructurePool {
         return name;
     }
 
-    public boolean isBuild(Location location) {
-        for (Rotation rotation : Rotation.values()) {
+    public boolean isBuild(final Location location) {
+        for (final Rotation rotation : Rotation.values()) {
             if (!isBuild(location, rotation)) {
                 continue;
             }
@@ -40,18 +40,18 @@ public final class StructurePool {
         return false;
     }
 
-    public boolean isBuild(Location location, Rotation rotation) {
+    public boolean isBuild(final Location location, final Rotation rotation) {
         return getStructure(rotation).isBuild(location);
     }
 
-    public Structure getStructure(Rotation rotation) {
+    public Structure getStructure(final Rotation rotation) {
         return structures.computeIfAbsent(rotation, input -> new Structure(this, rotation).create());
     }
 
-    public StructurePool loadStructure(Rotation rotation, Consumer<Structure> loader) {
+    public StructurePool loadStructure(final Rotation rotation, final Consumer<Structure> loader) {
         Objects.requireNonNull(rotation, "Rotation can't be null!");
         Objects.requireNonNull(loader, "Consumer<Structure> loader can't be null!");
-        Structure structure = new Structure(this, rotation);
+        final Structure structure = new Structure(this, rotation);
         loader.accept(structure);
         structures.clear();
         this.baseRotation = rotation;
@@ -59,21 +59,21 @@ public final class StructurePool {
         return this;
     }
 
-    public StructurePool saveStructure(Location bukkitOrigin, Rotation rotation, Position first, Position second) {
+    public StructurePool saveStructure(final Location bukkitOrigin, final Rotation rotation, final Position first, final Position second) {
         Objects.requireNonNull(rotation, "Rotation can't be null!");
         Objects.requireNonNull(first, "First position can't be null!");
         Objects.requireNonNull(second, "Second position can't be null!");
         Objects.requireNonNull(bukkitOrigin, "Location origin can't be null!");
-        World world = Objects.requireNonNull(bukkitOrigin.getWorld(), "Origin world can't be null!");
-        Structure structure = new Structure(this, rotation);
-        Position origin = new Position(bukkitOrigin.getBlockX(), bukkitOrigin.getBlockY(), bukkitOrigin.getBlockZ());
-        Position min = first.min(second);
-        Position max = first.max(second);
-        HashMap<Position, StructureBlockData> map = structure.getMap();
+        final World world = Objects.requireNonNull(bukkitOrigin.getWorld(), "Origin world can't be null!");
+        final Structure structure = new Structure(this, rotation);
+        final Position origin = new Position(bukkitOrigin.getBlockX(), bukkitOrigin.getBlockY(), bukkitOrigin.getBlockZ());
+        final Position min = first.min(second);
+        final Position max = first.max(second);
+        final HashMap<Position, StructureBlockData> map = structure.getMap();
         for (int x = min.getX(); x < max.getX(); x++) {
             for (int z = min.getZ(); z < max.getZ(); z++) {
                 for (int y = min.getY(); y < max.getY(); y++) {
-                    BlockData data = world.getBlockAt(x, y, z).getBlockData();
+                    final BlockData data = world.getBlockAt(x, y, z).getBlockData();
                     if (data == null) {
                         continue;
                     }

@@ -16,7 +16,7 @@ public final class EventWrapper implements Comparable<EventWrapper>, ITickReceiv
 
     private boolean running = false;
 
-    public EventWrapper(IFeatureEventExtension event) {
+    public EventWrapper(final IFeatureEventExtension event) {
         this.event = event;
         this.chance = event.additive(-1);
         this.name = event.getClass().getTypeName();
@@ -46,7 +46,7 @@ public final class EventWrapper implements Comparable<EventWrapper>, ITickReceiv
     }
 
     @Override
-    public void onTick(long deltaTime) {
+    public void onTick(final long deltaTime) {
         if (event.isOver()) {
             stop();
             return;
@@ -58,18 +58,17 @@ public final class EventWrapper implements Comparable<EventWrapper>, ITickReceiv
         chance += event.additive(passed);
     }
 
-    protected void start(RandomNumberGenerator seedGenerator) {
+    protected void start(final RandomNumberGenerator seedGenerator) {
         if (running) {
             return;
         }
         running = true;
         chance = 0;
         passed = 0;
-        EventInfo info = new EventInfo(seedGenerator);
+        final EventInfo info = new EventInfo(seedGenerator);
         event.onStart(info);
         ticker.setLength(50 * info.getTickTime());
         ticker.start();
-        return;
     }
 
     public void stop() {
@@ -82,7 +81,7 @@ public final class EventWrapper implements Comparable<EventWrapper>, ITickReceiv
     }
 
     @Override
-    public int compareTo(EventWrapper other) {
+    public int compareTo(final EventWrapper other) {
         return Double.compare(chance, other.chance);
     }
 

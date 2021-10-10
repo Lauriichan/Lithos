@@ -12,8 +12,8 @@ import com.syntaxphoenix.avinity.module.extension.Extension;
 public final class EconomyBankSerializer implements IDataExtension<EconomyBank, NbtCompound> {
 
     @Override
-    public NbtCompound convert(EconomyBank input) {
-        NbtCompound compound = new NbtCompound();
+    public NbtCompound convert(final EconomyBank input) {
+        final NbtCompound compound = new NbtCompound();
         compound.set("owner", input.getUniqueId().toString());
         compound.set("value", input.get());
         return compound;

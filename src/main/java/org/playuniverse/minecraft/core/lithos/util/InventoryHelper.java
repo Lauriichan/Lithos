@@ -11,10 +11,10 @@ public final class InventoryHelper {
 
     private InventoryHelper() {}
 
-    public static void add(Location location, Inventory inventory, ItemStack sample, long amount) {
-        int max = sample.getMaxStackSize();
+    public static void add(final Location location, final Inventory inventory, final ItemStack sample, long amount) {
+        final int max = sample.getMaxStackSize();
         while (amount != 0) {
-            ItemStack out = sample.clone();
+            final ItemStack out = sample.clone();
             if (amount > max) {
                 out.setAmount(max);
                 add(location, inventory, out);
@@ -27,22 +27,22 @@ public final class InventoryHelper {
         }
     }
 
-    private static void add(Location location, Inventory inventory, ItemStack stack) {
-        HashMap<Integer, ItemStack> map = inventory.addItem(stack);
+    private static void add(final Location location, final Inventory inventory, final ItemStack stack) {
+        final HashMap<Integer, ItemStack> map = inventory.addItem(stack);
         if (map.isEmpty()) {
             return;
         }
         location.getWorld().dropItem(location, map.get(0));
     }
 
-    public static void remove(Inventory inventory, ItemStack sample, long amount) {
-        int size = inventory.getSize();
+    public static void remove(final Inventory inventory, final ItemStack sample, final long amount) {
+        final int size = inventory.getSize();
         for (int index = 0; index < size; index++) {
-            ItemStack stack = inventory.getItem(index);
+            final ItemStack stack = inventory.getItem(index);
             if (stack == null || stack.getType() == Material.AIR || !sample.isSimilar(stack)) {
                 continue;
             }
-            long rest = amount - stack.getAmount();
+            final long rest = amount - stack.getAmount();
             if (rest > 0) {
                 inventory.setItem(index, null);
                 continue;

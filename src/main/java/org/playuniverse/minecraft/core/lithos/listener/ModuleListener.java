@@ -15,15 +15,15 @@ public final class ModuleListener implements IListenerExtension {
 
     private final Lithos lithos;
 
-    public ModuleListener(ModuleWrapper<Lithos> wrapper) {
+    public ModuleListener(final ModuleWrapper<Lithos> wrapper) {
         this.lithos = wrapper.getModule();
     }
 
     @EventHandler
-    public void onModuleDisable(ModuleDisableEvent event) {
+    public void onModuleDisable(final ModuleDisableEvent event) {
 
-        ModuleWrapper<?> wrapper = event.getWrapper();
-        
+        final ModuleWrapper<?> wrapper = event.getWrapper();
+
         lithos.getFeatureHandler().unregister(wrapper);
         lithos.getIOHandler().unregister(wrapper);
 

@@ -15,22 +15,23 @@ public interface IFeatureEventExtension extends IExtension {
     void onStart(EventInfo info);
 
     boolean isOver();
-    
+
     void onTick(long deltaTime);
 
     void onStop();
 
-    public static int[] register(Lithos lithos) {
-        List<IFeatureEventExtension> events = lithos.getModuleManager().getExtensionManager().getExtensions(IFeatureEventExtension.class);
-        int[] output = new int[2];
+    static int[] register(final Lithos lithos) {
+        final List<IFeatureEventExtension> events = lithos.getModuleManager().getExtensionManager()
+            .getExtensions(IFeatureEventExtension.class);
+        final int[] output = new int[2];
         output[1] = events.size();
         if (output[1] == 0) {
             output[0] = 0;
             return output;
         }
         int registered = 0;
-        EventHandler handler = lithos.getFeatureHandler().get(EventHandler.class);
-        for (IFeatureEventExtension event : events) {
+        final EventHandler handler = lithos.getFeatureHandler().get(EventHandler.class);
+        for (final IFeatureEventExtension event : events) {
             if (!handler.register(event)) {
                 continue;
             }

@@ -15,14 +15,14 @@ import com.syntaxphoenix.avinity.module.extension.Extension;
 public final class EconomyBankDeserializer implements IDataExtension<NbtCompound, EconomyBank> {
 
     @Override
-    public EconomyBank convert(NbtCompound input) {
+    public EconomyBank convert(final NbtCompound input) {
         if (!input.hasKey("owner", NbtType.STRING) || !input.hasKey("value", NbtType.LONG)) {
             return null;
         }
         try {
-            UUID uniqueId = UUID.fromString(input.getString("owner"));
+            final UUID uniqueId = UUID.fromString(input.getString("owner"));
             return new EconomyBank(uniqueId).set(input.getLong("value"));
-        } catch (IllegalArgumentException exp) {
+        } catch (final IllegalArgumentException exp) {
             return null;
         }
     }

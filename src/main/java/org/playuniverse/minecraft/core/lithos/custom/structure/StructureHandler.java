@@ -25,7 +25,7 @@ public final class StructureHandler {
     private final File folder;
     private final IOHandler ioHandler;
 
-    public StructureHandler(IOHandler ioHandler, File folder) {
+    public StructureHandler(final IOHandler ioHandler, final File folder) {
         this.ioHandler = ioHandler;
         this.folder = Files.createFolder(new File(folder, "structures"));
     }
@@ -41,16 +41,16 @@ public final class StructureHandler {
     /*
      * Structure Pools
      */
-    
+
     public String[] getNames() {
         return pools.keySet().toArray(String[]::new);
     }
 
-    public StructurePool get(String name) {
+    public StructurePool get(final String name) {
         return pools.get(name.toLowerCase());
     }
 
-    public boolean has(String name) {
+    public boolean has(final String name) {
         return pools.containsKey(name);
     }
 
@@ -58,22 +58,22 @@ public final class StructureHandler {
      * Creation
      */
 
-    public boolean hasInfo(UUID id) {
+    public boolean hasInfo(final UUID id) {
         return infos.containsKey(id);
     }
 
-    public void prepare(UUID id, String name, Rotation rotation, Position first, Position second) {
+    public void prepare(final UUID id, final String name, final Rotation rotation, final Position first, final Position second) {
         infos.put(id, new StructureInfo(name.toLowerCase(), rotation, first, second));
     }
 
-    public void create(UUID id, Location origin) {
-        StructureInfo info = infos.remove(id);
-        StructurePool pool = pools.computeIfAbsent(info.getName(), name -> new StructurePool(name));
+    public void create(final UUID id, final Location origin) {
+        final StructureInfo info = infos.remove(id);
+        final StructurePool pool = pools.computeIfAbsent(info.getName(), StructurePool::new);
         pool.saveStructure(origin, info.getRotation(), info.getFirst(), info.getSecond());
-        NbtCompound compound = ioHandler.serialize(pool);
+        final NbtCompound compound = ioHandler.serialize(pool);
         try {
             NbtSerializer.COMPRESSED.toFile(new NbtNamedTag(info.getName(), compound), new File(folder, info.getName() + ".nbt"));
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // Ignore for now
         }
     }
@@ -83,26 +83,26 @@ public final class StructureHandler {
      */
 
     public void load() {
-        for (File file : folder.listFiles()) {
+        for (final File file : folder.listFiles()) {
             if (!file.getName().endsWith(".nbt")) {
                 continue;
             }
             NbtCompound compound;
             try {
-                NbtTag tag = NbtDeserializer.COMPRESSED.fromFile(file).getTag();
+                final NbtTag tag = NbtDeserializer.COMPRESSED.fromFile(file).getTag();
                 if (tag.getType() != NbtType.COMPOUND) {
                     continue;
                 }
                 compound = (NbtCompound) tag;
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 // Ignore for now
                 continue;
             }
-            Object object = ioHandler.deserialize(compound);
+            final Object object = ioHandler.deserialize(compound);
             if (!(object instanceof StructurePool)) {
                 continue;
             }
-            StructurePool pool = (StructurePool) object;
+            final StructurePool pool = (StructurePool) object;
             pools.put(pool.getName(), pool);
         }
     }

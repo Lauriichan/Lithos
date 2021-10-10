@@ -7,7 +7,7 @@ public final class EconomyBank {
     private final UUID uniqueId;
     private long value = 0;
 
-    public EconomyBank(UUID uniqueId) {
+    public EconomyBank(final UUID uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -19,17 +19,17 @@ public final class EconomyBank {
         return value;
     }
 
-    public EconomyBank set(long value) {
+    public EconomyBank set(final long value) {
         this.value = value;
         return this;
     }
 
-    public EconomyBank add(long value) {
+    public EconomyBank add(final long value) {
         this.value += value;
         return this;
     }
 
-    public EconomyBank subtract(long value) {
+    public EconomyBank subtract(final long value) {
         this.value -= value;
         return this;
     }

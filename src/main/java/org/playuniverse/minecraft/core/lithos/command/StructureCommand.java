@@ -39,19 +39,19 @@ public final class StructureCommand implements ICommandExtension {
 
     private final StructureHandler handler;
 
-    public StructureCommand(ModuleWrapper<Lithos> module) {
+    public StructureCommand(final ModuleWrapper<Lithos> module) {
         this.handler = module.getModule().getStructureHandler();
     }
 
     @Override
     @CommandInfo(name = "structure")
-    public RootNode<MinecraftInfo> buildRoot(String name) {
+    public RootNode<MinecraftInfo> buildRoot(final String name) {
         return new CommandNode<>(name, this::execute, this::complete);
     }
 
-    public void execute(CommandContext<MinecraftInfo> context) {
-        MessageWrapper<?> wrapper = context.getSource().getReceiver();
-        CommandSender sender = context.getSource().getSender();
+    public void execute(final CommandContext<MinecraftInfo> context) {
+        final MessageWrapper<?> wrapper = context.getSource().getReceiver();
+        final CommandSender sender = context.getSource().getSender();
         if (!sender.hasPermission("lithos.structure")) {
             wrapper.send("$prefix Du kannst keine Strukturen verwenden!");
             return;
@@ -60,51 +60,51 @@ public final class StructureCommand implements ICommandExtension {
             wrapper.send("$prefix Dies kann nur ein Spieler ausführen!");
             return;
         }
-        StringReader reader = context.getReader();
+        final StringReader reader = context.getReader();
         if (!reader.skipWhitespace().hasNext()) {
             wrapper.send("$prefix Bitte gebe den Namen der Struktur an");
             return;
         }
-        String name = reader.readUnquoted();
+        final String name = reader.readUnquoted();
         if (!reader.skipWhitespace().hasNext()) {
             wrapper.send("$prefix Bitte gebe die Aktion an die du ausführen willst (save / paste)");
             return;
         }
-        String action = reader.readUnquoted();
+        final String action = reader.readUnquoted();
         if (!reader.skipWhitespace().hasNext()) {
             wrapper.send("$prefix Bitte gebe die Rotation an die du speichern möchtest (NORTH / EAST / SOUTH / WEST)");
             return;
         }
-        String rotationRaw = reader.readUnquoted();
-        Rotation rotation = Rotation.fromString(rotationRaw);
+        final String rotationRaw = reader.readUnquoted();
+        final Rotation rotation = Rotation.fromString(rotationRaw);
         if (!rotation.name().equalsIgnoreCase(rotationRaw)) {
             wrapper.send("$prefix Bitte gebe eine gültige Rotation an (NORTH / EAST / SOUTH / WEST)");
             return;
         }
-        Player player = (Player) sender;
-        if (action.equalsIgnoreCase("save")) {
-            Block block = player.getTargetBlockExact(4, FluidCollisionMode.NEVER);
+        final Player player = (Player) sender;
+        if ("save".equalsIgnoreCase(action)) {
+            final Block block = player.getTargetBlockExact(4, FluidCollisionMode.NEVER);
             if (block == null || block.getBlockData().getMaterial() != Material.STRUCTURE_BLOCK) {
                 wrapper.send("$prefix Bitte schaue auf einen Structure Block");
                 return;
             }
-            Structure structure = (Structure) block.getState();
+            final Structure structure = (Structure) block.getState();
             if (structure.getUsageMode() != UsageMode.SAVE) {
                 wrapper.send("$prefix Bitte stelle den Structure Block auf SAVE");
                 return;
             }
-            BlockVector size = structure.getStructureSize();
-            BlockVector relative = structure.getRelativePosition();
-            Location location = block.getLocation();
-            int x = location.getBlockX() + relative.getBlockX();
-            int y = location.getBlockY() + relative.getBlockY();
-            int z = location.getBlockZ() + relative.getBlockZ();
+            final BlockVector size = structure.getStructureSize();
+            final BlockVector relative = structure.getRelativePosition();
+            final Location location = block.getLocation();
+            final int x = location.getBlockX() + relative.getBlockX();
+            final int y = location.getBlockY() + relative.getBlockY();
+            final int z = location.getBlockZ() + relative.getBlockZ();
             handler.prepare(player.getUniqueId(), name, rotation, new Position(x, y, z),
                 new Position(x + size.getBlockX(), y + size.getBlockY(), z + size.getBlockZ()));
             wrapper.send("$prefix Vorbereitung gespeichert, bitte schlage den Hauptblock der Struktur mit einem Stock");
             return;
         }
-        if (!action.equalsIgnoreCase("paste")) {
+        if (!"paste".equalsIgnoreCase(action)) {
             wrapper.send("$prefix Bitte gebe eine gültige Aktion an (save / paste)");
             return;
         }
@@ -117,39 +117,40 @@ public final class StructureCommand implements ICommandExtension {
         wrapper.send(new Placeholder[] {
             Placeholder.of("name", name)
         }, "$prefix Die Struktur '$name' wird geladen...");
-        HashMap<Position, StructureBlockData> data = new HashMap<>(handler.get(name).getStructure(rotation).getMap()); // Copy in case of
-                                                                                                                       // changes
-        HashMap<String, BlockData> bukkit = new HashMap<>();
-        Location location = player.getLocation();
-        Position origin = new Position(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-        for (Position position : data.keySet()) {
-            BlockData blockData = bukkit.computeIfAbsent(data.get(position).asBlockData(), Bukkit::createBlockData);
+        final HashMap<Position, StructureBlockData> data = new HashMap<>(handler.get(name).getStructure(rotation).getMap()); // Copy in case
+                                                                                                                             // of
+        // changes
+        final HashMap<String, BlockData> bukkit = new HashMap<>();
+        final Location location = player.getLocation();
+        final Position origin = new Position(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        for (final Position position : data.keySet()) {
+            final BlockData blockData = bukkit.computeIfAbsent(data.get(position).asBlockData(), Bukkit::createBlockData);
             location.getWorld().getBlockAt(position.getX(origin), position.getY(origin), position.getZ(origin)).setBlockData(blockData);
         }
         wrapper.send(new Placeholder[] {
             Placeholder.of("name", name)
         }, "$prefix Die Struktur '$name' wurde erfolgreich geladen!");
     }
-    
-    public List<String> complete(CommandContext<MinecraftInfo> context) {
-        ArrayList<String> list = new ArrayList<>();
-        StringReader reader = context.getReader();
+
+    public List<String> complete(final CommandContext<MinecraftInfo> context) {
+        final ArrayList<String> list = new ArrayList<>();
+        final StringReader reader = context.getReader();
         reader.skipWhitespace().readUnquoted();
-        if(!reader.hasNext()) {
+        if (!reader.hasNext()) {
             Collections.addAll(list, handler.getNames());
             return list;
         }
         reader.skipWhitespace().readUnquoted();
-        if(!reader.hasNext()) {
+        if (!reader.hasNext()) {
             list.add("save");
             list.add("paste");
             return list;
         }
         reader.skipWhitespace().readUnquoted();
-        if(reader.hasNext()) {
-           return list; 
+        if (reader.hasNext()) {
+            return list;
         }
-        for(Rotation rotation : Rotation.values()) {
+        for (final Rotation rotation : Rotation.values()) {
             list.add(rotation.name());
         }
         return list;

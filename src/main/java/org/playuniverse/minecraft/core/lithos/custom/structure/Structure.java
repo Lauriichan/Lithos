@@ -16,7 +16,7 @@ public final class Structure {
 
     private final StructurePool parent;
 
-    public Structure(StructurePool parent, Rotation rotation) {
+    public Structure(final StructurePool parent, final Rotation rotation) {
         this.parent = parent;
         this.rotation = rotation;
     }
@@ -33,18 +33,19 @@ public final class Structure {
         return rotation;
     }
 
-    public boolean isBuild(Location location) {
-        World world = location.getWorld();
-        Position origin = new Position(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-        Position[] positions = map.keySet().toArray(Position[]::new);
-        HashMap<String, BlockData> cache = new HashMap<>();
-        for (Position position : positions) {
-            StructureBlockData data = map.get(position);
+    public boolean isBuild(final Location location) {
+        final World world = location.getWorld();
+        final Position origin = new Position(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        final Position[] positions = map.keySet().toArray(Position[]::new);
+        final HashMap<String, BlockData> cache = new HashMap<>();
+        for (final Position position : positions) {
+            final StructureBlockData data = map.get(position);
             if (data == null) {
                 continue;
             }
-            BlockData bukkitData = cache.computeIfAbsent(data.asBlockData(), Bukkit::createBlockData);
-            BlockData blockData = world.getBlockAt(position.getX(origin), position.getY(origin), position.getZ(origin)).getBlockData();
+            final BlockData bukkitData = cache.computeIfAbsent(data.asBlockData(), Bukkit::createBlockData);
+            final BlockData blockData = world.getBlockAt(position.getX(origin), position.getY(origin), position.getZ(origin))
+                .getBlockData();
             if (!bukkitData.matches(blockData)) {
                 cache.clear();
                 return false;
@@ -58,9 +59,9 @@ public final class Structure {
         if (!map.isEmpty()) {
             return this; // Already created
         }
-        HashMap<Position, StructureBlockData> base = parent.getStructure(parent.getBaseRotation()).getMap();
-        int amount = parent.getBaseRotation().rotateTo(rotation);
-        for (Position position : base.keySet()) {
+        final HashMap<Position, StructureBlockData> base = parent.getStructure(parent.getBaseRotation()).getMap();
+        final int amount = parent.getBaseRotation().rotateTo(rotation);
+        for (final Position position : base.keySet()) {
             map.put(position.rotate(amount), base.get(position).clone().rotate(amount));
         }
         return this;

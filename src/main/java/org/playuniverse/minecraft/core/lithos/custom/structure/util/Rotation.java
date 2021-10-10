@@ -11,14 +11,14 @@ public enum Rotation {
 
     private final int left, right, mid;
 
-    private Rotation(int left, int right, int mid) {
+    Rotation(final int left, final int right, final int mid) {
         this.left = left;
         this.right = right;
         this.mid = mid;
     }
 
-    public Rotation rotate(int amount) {
-        int id = switch (amount % 4) {
+    public Rotation rotate(final int amount) {
+        final int id = switch (amount % 4) {
         case 1:
             yield right;
         case 2:
@@ -31,11 +31,11 @@ public enum Rotation {
         return id == -1 ? this : Rotation.values()[id];
     }
 
-    public int rotateTo(Rotation rotation) {
+    public int rotateTo(final Rotation rotation) {
         if (rotation == this) {
             return 0;
         }
-        int id = rotation.ordinal();
+        final int id = rotation.ordinal();
         if (id == right) {
             return 1;
         }
@@ -45,7 +45,7 @@ public enum Rotation {
         return 3;
     }
 
-    public static Rotation fromBukkit(StructureRotation rotation) {
+    public static Rotation fromBukkit(final StructureRotation rotation) {
         switch (rotation) {
         case CLOCKWISE_90:
             return Rotation.EAST;
@@ -58,7 +58,7 @@ public enum Rotation {
         }
     }
 
-    public static Rotation fromString(String value) {
+    public static Rotation fromString(final String value) {
         try {
             return valueOf(value.toUpperCase());
         } catch (IllegalArgumentException | NullPointerException ignore) {

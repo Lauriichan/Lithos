@@ -8,19 +8,19 @@ public final class EventInfo {
     private final RandomNumberGenerator seedGenerator;
     private int tickTime = 1; // Time for ticks in 50ms ticks
 
-    public EventInfo(RandomNumberGenerator seedGenerator) {
+    public EventInfo(final RandomNumberGenerator seedGenerator) {
         this.seedGenerator = seedGenerator;
     }
 
-    public RandomNumberGenerator newRandom(NumberGeneratorType type) {
+    public RandomNumberGenerator newRandom(final NumberGeneratorType type) {
         return type.create(seedGenerator.nextLong());
     }
-    
+
     public long newSeed() {
         return seedGenerator.nextLong();
     }
 
-    public void setTickTime(int tickTime) {
+    public void setTickTime(final int tickTime) {
         this.tickTime = Math.max(1, tickTime);
     }
 

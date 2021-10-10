@@ -9,7 +9,7 @@ public final class StructureInfo {
     private final Rotation rotation;
     private final String name;
 
-    public StructureInfo(String name, Rotation rotation, Position first, Position second) {
+    public StructureInfo(final String name, final Rotation rotation, final Position first, final Position second) {
         this.first = first;
         this.second = second;
         this.rotation = rotation;
@@ -27,7 +27,7 @@ public final class StructureInfo {
     public String getName() {
         return name;
     }
-    
+
     public Rotation getRotation() {
         return rotation;
     }

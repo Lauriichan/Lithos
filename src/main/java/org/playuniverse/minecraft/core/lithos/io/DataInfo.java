@@ -6,7 +6,7 @@ final class DataInfo {
     private final TypeId id;
     private final IDataExtension handle;
 
-    public DataInfo(TypeId id, IDataExtension handle) {
+    public DataInfo(final TypeId id, final IDataExtension handle) {
         this.id = id;
         this.handle = handle;
     }
@@ -36,16 +36,17 @@ final class DataInfo {
     }
 
     @SuppressWarnings("unchecked")
-    public Object convert(Object input) {
+    public Object convert(final Object input) {
         if (!getInputType().isAssignableFrom(input.getClass())) {
             return null;
         }
-        Object out = handle.convert(id.input().cast(input));
+        final Object out = handle.convert(id.input().cast(input));
         return out == null ? null : id.output().cast(out);
     }
 
+    @Override
     public int hashCode() {
-        return (id.name().hashCode() << 24) | (id.input().hashCode() << 12) | (id.output().hashCode() << 0);
+        return id.name().hashCode() << 24 | id.input().hashCode() << 12 | id.output().hashCode() << 0;
     }
 
 }

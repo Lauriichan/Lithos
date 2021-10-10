@@ -17,11 +17,11 @@ public abstract class Feature implements IExtension {
         return enabled;
     }
 
-    public final void setEnabled(boolean enabled) {
+    public final void setEnabled(final boolean enabled) {
         this.enabled = enabled;
     }
 
-    final void tick(long deltaTime) {
+    final void tick(final long deltaTime) {
         if (!enabled) {
             return;
         }
@@ -29,20 +29,20 @@ public abstract class Feature implements IExtension {
     }
 
     protected abstract void onTick(long deltaTime);
-    
+
     protected abstract void onModuleDisable(ModuleWrapper<?> wrapper);
 
-    public static int[] register(Lithos lithos) {
-        List<Feature> features = lithos.getModuleManager().getExtensionManager().getExtensions(Feature.class);
-        int[] output = new int[2];
+    public static int[] register(final Lithos lithos) {
+        final List<Feature> features = lithos.getModuleManager().getExtensionManager().getExtensions(Feature.class);
+        final int[] output = new int[2];
         output[1] = features.size();
         if (output[1] == 0) {
             output[0] = 0;
             return output;
         }
         int registered = 0;
-        FeatureHandler handler = lithos.getFeatureHandler();
-        for (Feature feature : features) {
+        final FeatureHandler handler = lithos.getFeatureHandler();
+        for (final Feature feature : features) {
             if (!handler.register(feature)) {
                 continue;
             }

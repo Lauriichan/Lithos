@@ -17,7 +17,7 @@ public final class FeatureHandler implements ITickReceiver {
         ticker.add(this);
     }
 
-    public boolean register(Feature feature) {
+    public boolean register(final Feature feature) {
         if (feature == null || features.containsKey(feature.getClass())) {
             return false;
         }
@@ -25,27 +25,27 @@ public final class FeatureHandler implements ITickReceiver {
         return true;
     }
 
-    public <E extends Feature> E get(Class<E> clazz) {
-        Feature feature = features.get(clazz);
+    public <E extends Feature> E get(final Class<E> clazz) {
+        final Feature feature = features.get(clazz);
         return feature == null ? null : clazz.cast(feature);
     }
 
     @Override
-    public final void onTick(long deltaTime) {
-        for (Feature feature : features.values()) {
+    public void onTick(final long deltaTime) {
+        for (final Feature feature : features.values()) {
             feature.tick(deltaTime);
         }
     }
 
-    public void unregister(ModuleWrapper<?> wrapper) {
-        Entry<?, ?>[] entries = features.entrySet().toArray(Entry[]::new);
-        for (Entry<?, ?> entry : entries) {
+    public void unregister(final ModuleWrapper<?> wrapper) {
+        final Entry<?, ?>[] entries = features.entrySet().toArray(Entry[]::new);
+        for (final Entry<?, ?> entry : entries) {
             if (!wrapper.isFromModule((Class<?>) entry.getKey())) {
                 continue;
             }
             features.remove(entry.getKey()).setEnabled(false);
         }
-        for (Feature feature : features.values()) {
+        for (final Feature feature : features.values()) {
             feature.onModuleDisable(wrapper);
         }
     }

@@ -16,29 +16,27 @@ import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
 @EventInfo
-public class StructureListener implements IListenerExtension {
+public final class StructureListener implements IListenerExtension {
 
     private final StructureHandler handler;
     private final Lithos module;
 
-    public StructureListener(ModuleWrapper<Lithos> wrapper) {
+    public StructureListener(final ModuleWrapper<Lithos> wrapper) {
         this.module = wrapper.getModule();
         this.handler = module.getStructureHandler();
     }
 
     @BukkitEventHandler
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getAction() != Action.LEFT_CLICK_BLOCK || event.getMaterial() != Material.STICK) {
-            return;
-        }
-        if (!handler.hasInfo(event.getPlayer().getUniqueId())) {
+    public void onPlayerInteract(final PlayerInteractEvent event) {
+        if (event.getAction() != Action.LEFT_CLICK_BLOCK || event.getMaterial() != Material.STICK
+            || !handler.hasInfo(event.getPlayer().getUniqueId())) {
             return;
         }
         event.setCancelled(true);
-        MessageWrapper<?> message = MessageWrapper.of(event.getPlayer(), module);
+        final MessageWrapper<?> message = MessageWrapper.of(event.getPlayer(), module);
         try {
             handler.create(event.getPlayer().getUniqueId(), event.getClickedBlock().getLocation());
-        } catch (Exception exp) { // Normally nothing should happen but in case of smth
+        } catch (final Exception exp) { // Normally nothing should happen but in case of smth
             message.send("$prefix Something went wrong while saving your structure!");
             module.getLogger().log(LogTypeId.WARNING, exp);
             return;

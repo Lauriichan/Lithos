@@ -10,11 +10,11 @@ import java.lang.annotation.Target;
     ElementType.TYPE
 })
 public @interface TypeId {
-    
+
     public String name() default "";
-    
+
     public Class<?> input();
-    
+
     public Class<?> output();
 
 }

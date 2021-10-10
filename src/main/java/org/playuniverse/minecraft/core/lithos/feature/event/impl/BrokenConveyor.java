@@ -28,13 +28,13 @@ public final class BrokenConveyor implements IFeatureEventExtension {
     private final RandomNumberGenerator random = NumberGeneratorType.MURMUR.create();
 
     @Override
-    public double additive(int passed) {
+    public double additive(final int passed) {
         return Math.exp(passed / 8) / 2;
     }
 
     @Override
-    public void onStart(EventInfo info) {
-        RandomNumberGenerator random = info.newRandom(NumberGeneratorType.PERMUTED);
+    public void onStart(final EventInfo info) {
+        final RandomNumberGenerator random = info.newRandom(NumberGeneratorType.PERMUTED);
         int amount = random.nextInt(1, 5);
         while (amount-- != 0) {
             items.addAll(lootTables[random.nextInt(lootTables.length)].getLootTable().populateLoot(new Random(random.nextLong()),
@@ -49,12 +49,12 @@ public final class BrokenConveyor implements IFeatureEventExtension {
     }
 
     @Override
-    public void onTick(long deltaTime) {
-        int index = random.nextInt(items.size());
-        ItemStack stack = items.get(index);
+    public void onTick(final long deltaTime) {
+        final int index = random.nextInt(items.size());
+        final ItemStack stack = items.get(index);
         if (stack.getAmount() != 1) {
             stack.setAmount(stack.getAmount() - 1);
-            ItemStack output = stack.clone();
+            final ItemStack output = stack.clone();
             output.setAmount(1);
             dropItem(output);
             return;
@@ -63,14 +63,14 @@ public final class BrokenConveyor implements IFeatureEventExtension {
         dropItem(stack);
     }
 
-    private void dropItem(ItemStack stack) {
-        Collection<? extends Player> collection = Bukkit.getOnlinePlayers();
+    private void dropItem(final ItemStack stack) {
+        final Collection<? extends Player> collection = Bukkit.getOnlinePlayers();
         int index = random.nextInt(collection.size());
-        Iterator<? extends Player> iterator = collection.iterator();
+        final Iterator<? extends Player> iterator = collection.iterator();
         while (index-- != 0) {
             iterator.next();
         }
-        Location location = iterator.next().getLocation();
+        final Location location = iterator.next().getLocation();
         location.getWorld().dropItemNaturally(new Location(null, 0.5 + location.getBlockX() + random.nextInt(-5, 5), location.getBlockY(),
             0.5 + location.getBlockZ() + random.nextInt(-5, 5)), stack);
     }

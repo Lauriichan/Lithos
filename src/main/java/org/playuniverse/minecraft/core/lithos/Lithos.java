@@ -2,8 +2,8 @@ package org.playuniverse.minecraft.core.lithos;
 
 import org.playuniverse.minecraft.core.lithos.custom.structure.StructureHandler;
 import org.playuniverse.minecraft.core.lithos.economy.EconomyHandler;
-import org.playuniverse.minecraft.core.lithos.feature.FeatureHandler;
 import org.playuniverse.minecraft.core.lithos.feature.Feature;
+import org.playuniverse.minecraft.core.lithos.feature.FeatureHandler;
 import org.playuniverse.minecraft.core.lithos.feature.event.IFeatureEventExtension;
 import org.playuniverse.minecraft.core.lithos.io.IDataExtension;
 import org.playuniverse.minecraft.core.lithos.io.IOHandler;
@@ -16,7 +16,7 @@ public final class Lithos extends SpigotCoreModule {
 
     private final FeatureHandler featureHandler = new FeatureHandler();
     private final IOHandler ioHandler = new IOHandler();
-    
+
     private StructureHandler structureHandler;
     private EconomyHandler economyHandler;
 
@@ -25,7 +25,7 @@ public final class Lithos extends SpigotCoreModule {
         structureHandler = new StructureHandler(ioHandler, getDataLocation());
         economyHandler = new EconomyHandler(ioHandler, getDataLocation());
 
-        PlaceholderStore store = getDefaultPlaceholders();
+        final PlaceholderStore store = getDefaultPlaceholders();
         store.setPlaceholder(Placeholder.of("prefix", "&cLithos &8" + UniCode.ARROWS_RIGHT + "&7"));
     }
 
@@ -53,7 +53,7 @@ public final class Lithos extends SpigotCoreModule {
         result = IDataExtension.register(this);
         getLogger().log(String.format("Registered %s of %s io converter", result[0], result[1]));
     }
-    
+
     private void loadData() {
         structureHandler.load();
         economyHandler.load();
@@ -70,7 +70,7 @@ public final class Lithos extends SpigotCoreModule {
     public StructureHandler getStructureHandler() {
         return structureHandler;
     }
-    
+
     public EconomyHandler getEconomyHandler() {
         return economyHandler;
     }

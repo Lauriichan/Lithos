@@ -25,7 +25,7 @@ public final class EconomyHandler {
     private static final ItemStack TEN = ItemEditor.of(Material.GOLD_INGOT).setModel(8).name().add("&6&bGold").apply().asItemStack();
     private static final ItemStack HUNDRED = ItemEditor.of(Material.GOLD_BLOCK).setModel(8).name().add("&6&bGold").apply().asItemStack();
 
-    private static final ItemStack[] VALUES = new ItemStack[] {
+    private static final ItemStack[] VALUES = {
         ONE,
         TEN,
         HUNDRED
@@ -33,58 +33,58 @@ public final class EconomyHandler {
 
     private final HashMap<UUID, EconomyBank> banks = new HashMap<>();
     private final File folder;
-    
+
     private final IOHandler ioHandler;
 
-    public EconomyHandler(IOHandler ioHandler, File folder) {
+    public EconomyHandler(final IOHandler ioHandler, final File folder) {
         this.ioHandler = ioHandler;
         this.folder = Files.createFolder(new File(folder, "economy"));
     }
-    
+
     /*
      * Loading / Saving
      */
-    
+
     public void load() {
-        for(File file : folder.listFiles()) {
-            if(!file.getName().endsWith(".nbt")) {
+        for (final File file : folder.listFiles()) {
+            if (!file.getName().endsWith(".nbt")) {
                 continue;
             }
             NbtCompound compound;
             try {
-                NbtTag tag = NbtDeserializer.COMPRESSED.fromFile(file).getTag();
+                final NbtTag tag = NbtDeserializer.COMPRESSED.fromFile(file).getTag();
                 if (tag.getType() != NbtType.COMPOUND) {
                     continue;
                 }
                 compound = (NbtCompound) tag;
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 // Ignore for now
                 continue;
             }
-            Object object = ioHandler.deserialize(compound);
+            final Object object = ioHandler.deserialize(compound);
             if (!(object instanceof EconomyBank)) {
                 continue;
             }
-            EconomyBank bank = (EconomyBank) object;
+            final EconomyBank bank = (EconomyBank) object;
             banks.put(bank.getUniqueId(), bank);
         }
     }
-    
+
     public void save() {
-        
+
     }
-    
+
     /*
      * Handling
      */
 
-    public EconomyBank get(UUID uniqueId) {
+    public EconomyBank get(final UUID uniqueId) {
         return banks.computeIfAbsent(uniqueId, EconomyBank::new);
     }
 
-    public long transfer(UUID fromId, UUID toId, long value) {
-        EconomyBank from = get(fromId);
-        long diff = from.get() - value;
+    public long transfer(final UUID fromId, final UUID toId, final long value) {
+        final EconomyBank from = get(fromId);
+        final long diff = from.get() - value;
         if (diff < 0) {
             return diff * -1;
         }
@@ -93,18 +93,18 @@ public final class EconomyHandler {
         return 0;
     }
 
-    public long[] amount(Player player) {
-        long[] output = new long[3];
+    public long[] amount(final Player player) {
+        final long[] output = new long[3];
         output[0] = get(player.getUniqueId()).get();
         output[1] = asTotal(count(player.getInventory()));
         output[2] = asTotal(count(player.getEnderChest()));
         return output;
     }
 
-    public long deposit(Player player, long value) {
-        Inventory inventory = player.getInventory();
-        long[] total = count(inventory);
-        long result = value != -1 ? Math.min(asTotal(total), value) : asTotal(total);
+    public long deposit(final Player player, final long value) {
+        final Inventory inventory = player.getInventory();
+        final long[] total = count(inventory);
+        final long result = value != -1 ? Math.min(asTotal(total), value) : asTotal(total);
         if (result == 0) {
             return result;
         }
@@ -113,9 +113,9 @@ public final class EconomyHandler {
         return result;
     }
 
-    public long withdraw(Player player, long value) {
-        EconomyBank bank = get(player.getUniqueId());
-        long result = value != -1 ? Math.min(bank.get(), value) : bank.get();
+    public long withdraw(final Player player, final long value) {
+        final EconomyBank bank = get(player.getUniqueId());
+        final long result = value != -1 ? Math.min(bank.get(), value) : bank.get();
         if (result == 0) {
             return result;
         }
@@ -128,11 +128,11 @@ public final class EconomyHandler {
      * Inventory handling
      */
 
-    private long[] count(Inventory inventory) {
-        ItemStack[] items = inventory.getContents();
-        long[] amount = new long[3];
+    private long[] count(final Inventory inventory) {
+        final ItemStack[] items = inventory.getContents();
+        final long[] amount = new long[3];
         for (int index = 0; index < items.length; index++) {
-            ItemStack item = items[index];
+            final ItemStack item = items[index];
             if (item == null || item.getType() == Material.AIR) {
                 continue;
             }
@@ -152,19 +152,19 @@ public final class EconomyHandler {
         return amount;
     }
 
-    private long asTotal(long[] items) {
-        return items[0] + (items[1] * 10) + (items[2] * 100);
+    private long asTotal(final long[] items) {
+        return items[0] + items[1] * 10 + items[2] * 100;
     }
 
-    private long[] restrict(long[] items, long value) {
-        long[] needed = new long[] {
+    private long[] restrict(final long[] items, final long value) {
+        final long[] needed = {
             value % 10,
             Math.floorDiv(value % 100, 10),
             Math.floorDiv(value, 100)
         };
-        long[] result = new long[3];
+        final long[] result = new long[3];
         for (int index = items.length - 1; index >= 0; index--) {
-            long val = items[index] - needed[index];
+            final long val = items[index] - needed[index];
             if (val >= 0) {
                 result[index] += items[index] - val;
                 continue;
@@ -186,16 +186,16 @@ public final class EconomyHandler {
         return result;
     }
 
-    private void remove(Location location, Inventory inventory, long[] items) {
+    private void remove(final Location location, final Inventory inventory, final long[] items) {
         for (int index = 0; index < items.length; index++) {
-            long count = items[index];
+            final long count = items[index];
             if (count < 0) {
                 continue;
             }
             InventoryHelper.remove(inventory, VALUES[index], count);
         }
         for (int index = 0; index < items.length; index++) {
-            long count = items[index];
+            final long count = items[index];
             if (count > 0) {
                 continue;
             }
@@ -203,7 +203,7 @@ public final class EconomyHandler {
         }
     }
 
-    private void add(Location location, Inventory inventory, long value) {
+    private void add(final Location location, final Inventory inventory, final long value) {
         InventoryHelper.add(location, inventory, HUNDRED, Math.floorDiv(value, 100));
         InventoryHelper.add(location, inventory, TEN, Math.floorDiv(value % 100, 10));
         InventoryHelper.add(location, inventory, ONE, value % 10);
