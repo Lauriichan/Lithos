@@ -19,7 +19,7 @@ public final class Lithos extends SpigotCoreModule {
 
     @Override
     protected void onLoad() {
-        structureHandler = new StructureHandler(getDataLocation());
+        structureHandler = new StructureHandler(ioHandler, getDataLocation());
 
         PlaceholderStore store = getDefaultPlaceholders();
         store.setPlaceholder(Placeholder.of("prefix", "&cLithos &8" + UniCode.ARROWS_RIGHT + "&7"));

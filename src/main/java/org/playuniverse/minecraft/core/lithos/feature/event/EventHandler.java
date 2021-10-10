@@ -11,7 +11,6 @@ import com.syntaxphoenix.avinity.module.ModuleWrapper;
 import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
-@org.playuniverse.minecraft.mcs.spigot.module.extension.info.EventInfo(bukkit = false)
 public final class EventHandler extends Feature {
 
     private final TreeMap<Double, Integer> indexMap = new TreeMap<>();

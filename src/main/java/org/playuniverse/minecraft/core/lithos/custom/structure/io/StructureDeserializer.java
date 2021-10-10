@@ -28,7 +28,7 @@ public final class StructureDeserializer implements IDataExtension<NbtCompound, 
             || !input.hasKey("blocks", NbtType.INT_ARRAY)) {
             return null;
         }
-        StructurePool pool = new StructurePool(input.getString("name"));
+        StructurePool pool = new StructurePool(input.getString("name").toLowerCase());
         String rotationRaw = input.getString("rotation");
         Rotation rotation = Rotation.fromString(rotationRaw);
         if (!rotation.name().equalsIgnoreCase(rotationRaw)) {
