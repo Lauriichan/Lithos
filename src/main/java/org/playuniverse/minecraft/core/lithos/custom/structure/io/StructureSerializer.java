@@ -40,8 +40,7 @@ public final class StructureSerializer implements IDataExtension<StructurePool, 
                 id = list.size();
                 list.add(data);
             }
-            final int posId = position.toId();
-            blocks[index++] = posId << 11 | merge11BitUnsigned(id);
+            blocks[index++] = position.toId() << 11 | merge11BitUnsigned(id);
         }
         final NbtList<NbtString> out = new NbtList<>();
         for (final String value : list) {
