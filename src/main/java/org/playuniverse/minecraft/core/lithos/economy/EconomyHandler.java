@@ -1,6 +1,7 @@
 package org.playuniverse.minecraft.core.lithos.economy;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -9,7 +10,13 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.playuniverse.minecraft.core.lithos.io.IOHandler;
 import org.playuniverse.minecraft.core.lithos.util.InventoryHelper;
+import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtCompound;
+import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtTag;
+import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtType;
+import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.tools.NbtDeserializer;
+import org.playuniverse.minecraft.mcs.shaded.syapi.utils.java.Files;
 import org.playuniverse.minecraft.mcs.spigot.bukkit.inventory.item.ItemEditor;
 
 public final class EconomyHandler {
@@ -26,13 +33,53 @@ public final class EconomyHandler {
 
     private final HashMap<UUID, EconomyBank> banks = new HashMap<>();
     private final File folder;
+    
+    private final IOHandler ioHandler;
 
-    public EconomyHandler(File folder) {
-        this.folder = new File(folder, "economy");
+    public EconomyHandler(IOHandler ioHandler, File folder) {
+        this.ioHandler = ioHandler;
+        this.folder = Files.createFolder(new File(folder, "economy"));
     }
+    
+    /*
+     * Loading / Saving
+     */
+    
+    public void load() {
+        for(File file : folder.listFiles()) {
+            if(!file.getName().endsWith(".nbt")) {
+                continue;
+            }
+            NbtCompound compound;
+            try {
+                NbtTag tag = NbtDeserializer.COMPRESSED.fromFile(file).getTag();
+                if (tag.getType() != NbtType.COMPOUND) {
+                    continue;
+                }
+                compound = (NbtCompound) tag;
+            } catch (IOException e) {
+                // Ignore for now
+                continue;
+            }
+            Object object = ioHandler.deserialize(compound);
+            if (!(object instanceof EconomyBank)) {
+                continue;
+            }
+            EconomyBank bank = (EconomyBank) object;
+            banks.put(bank.getUniqueId(), bank);
+        }
+    }
+    
+    public void save() {
+        
+    }
+    
+    /*
+     * Handling
+     */
 
     public EconomyBank get(UUID uniqueId) {
-        return banks.computeIfAbsent(uniqueId, id -> new EconomyBank(folder, id));
+        return banks.computeIfAbsent(uniqueId, EconomyBank::new);
     }
 
     public long transfer(UUID fromId, UUID toId, long value) {

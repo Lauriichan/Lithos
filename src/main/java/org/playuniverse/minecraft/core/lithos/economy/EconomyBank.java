@@ -1,22 +1,14 @@
 package org.playuniverse.minecraft.core.lithos.economy;
 
-import java.io.File;
 import java.util.UUID;
 
 public final class EconomyBank {
 
     private final UUID uniqueId;
-    private final File file;
+    private long value = 0;
 
-    private long value;
-
-    public EconomyBank(File folder, UUID uniqueId) {
-        this.file = new File(folder, uniqueId.toString() + ".nbt");
+    public EconomyBank(UUID uniqueId) {
         this.uniqueId = uniqueId;
-    }
-
-    public File getFile() {
-        return file;
     }
 
     public UUID getUniqueId() {

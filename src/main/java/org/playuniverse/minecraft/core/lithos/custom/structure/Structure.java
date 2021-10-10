@@ -35,9 +35,6 @@ public final class Structure {
         }
         HashMap<Position, StructureBlockData> base = parent.getStructure(parent.getBaseRotation()).getMap();
         int amount = parent.getBaseRotation().rotateTo(rotation);
-        System.out.println(amount);
-        System.out.println(parent.getBaseRotation());
-        System.out.println(rotation);
         for (Position position : base.keySet()) {
             map.put(position.rotate(amount), base.get(position).clone().rotate(amount));
         }

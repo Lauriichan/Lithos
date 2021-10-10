@@ -1,6 +1,7 @@
 package org.playuniverse.minecraft.core.lithos;
 
 import org.playuniverse.minecraft.core.lithos.custom.structure.StructureHandler;
+import org.playuniverse.minecraft.core.lithos.economy.EconomyHandler;
 import org.playuniverse.minecraft.core.lithos.feature.FeatureHandler;
 import org.playuniverse.minecraft.core.lithos.feature.Feature;
 import org.playuniverse.minecraft.core.lithos.feature.event.IFeatureEventExtension;
@@ -15,11 +16,14 @@ public final class Lithos extends SpigotCoreModule {
 
     private final FeatureHandler featureHandler = new FeatureHandler();
     private final IOHandler ioHandler = new IOHandler();
+    
     private StructureHandler structureHandler;
+    private EconomyHandler economyHandler;
 
     @Override
     protected void onLoad() {
         structureHandler = new StructureHandler(ioHandler, getDataLocation());
+        economyHandler = new EconomyHandler(ioHandler, getDataLocation());
 
         PlaceholderStore store = getDefaultPlaceholders();
         store.setPlaceholder(Placeholder.of("prefix", "&cLithos &8" + UniCode.ARROWS_RIGHT + "&7"));
@@ -52,6 +56,7 @@ public final class Lithos extends SpigotCoreModule {
     
     private void loadData() {
         structureHandler.load();
+        economyHandler.load();
     }
 
     /*
@@ -64,6 +69,10 @@ public final class Lithos extends SpigotCoreModule {
 
     public StructureHandler getStructureHandler() {
         return structureHandler;
+    }
+    
+    public EconomyHandler getEconomyHandler() {
+        return economyHandler;
     }
 
     public IOHandler getIOHandler() {
