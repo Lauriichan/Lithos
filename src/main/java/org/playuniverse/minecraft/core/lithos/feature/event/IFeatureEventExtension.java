@@ -8,7 +8,7 @@ import com.syntaxphoenix.avinity.module.extension.ExtensionPoint;
 import com.syntaxphoenix.avinity.module.extension.IExtension;
 
 @ExtensionPoint
-public interface IFeatureEvent extends IExtension {
+public interface IFeatureEventExtension extends IExtension {
 
     double additive(int passed);
 
@@ -21,7 +21,7 @@ public interface IFeatureEvent extends IExtension {
     void onStop();
 
     public static int[] register(Lithos lithos) {
-        List<IFeatureEvent> events = lithos.getModuleManager().getExtensionManager().getExtensions(IFeatureEvent.class);
+        List<IFeatureEventExtension> events = lithos.getModuleManager().getExtensionManager().getExtensions(IFeatureEventExtension.class);
         int[] output = new int[2];
         output[1] = events.size();
         if (output[1] == 0) {
@@ -30,7 +30,7 @@ public interface IFeatureEvent extends IExtension {
         }
         int registered = 0;
         EventHandler handler = lithos.getFeatureHandler().get(EventHandler.class);
-        for (IFeatureEvent event : events) {
+        for (IFeatureEventExtension event : events) {
             if (!handler.register(event)) {
                 continue;
             }

@@ -3,19 +3,16 @@ package org.playuniverse.minecraft.core.lithos.feature.event;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import org.playuniverse.minecraft.core.lithos.Lithos;
 import org.playuniverse.minecraft.core.lithos.feature.Feature;
 import org.playuniverse.minecraft.mcs.shaded.syapi.random.NumberGeneratorType;
 import org.playuniverse.minecraft.mcs.shaded.syapi.random.RandomNumberGenerator;
-import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension;
 
 import com.syntaxphoenix.avinity.module.ModuleWrapper;
-import com.syntaxphoenix.avinity.module.event.ModuleDisableEvent;
 import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
 @org.playuniverse.minecraft.mcs.spigot.module.extension.info.EventInfo(bukkit = false)
-public final class EventHandler extends Feature implements IListenerExtension {
+public final class EventHandler extends Feature {
 
     private final TreeMap<Double, Integer> indexMap = new TreeMap<>();
     private final ArrayList<EventWrapper> wrappers = new ArrayList<>();
@@ -26,11 +23,7 @@ public final class EventHandler extends Feature implements IListenerExtension {
     private double chance = 0.1;
     private int passed = 0;
 
-    public EventHandler(ModuleWrapper<Lithos> wrapper) {
-        wrapper.getModule().getFeatureHandler().register(this);
-    }
-
-    boolean register(IFeatureEvent event) {
+    boolean register(IFeatureEventExtension event) {
         int size = wrappers.size();
         for (int index = 0; index < size; index++) {
             if (wrappers.get(index).getEvent().getClass() == event.getClass()) {
@@ -88,10 +81,9 @@ public final class EventHandler extends Feature implements IListenerExtension {
      * Unload modules
      */
 
-    @org.playuniverse.minecraft.mcs.shaded.syapi.event.EventHandler
-    public void onModuleDisable(ModuleDisableEvent event) {
+    @Override
+    public void onModuleDisable(ModuleWrapper<?> wrapper) {
         int size = wrappers.size();
-        ModuleWrapper<?> wrapper = event.getWrapper();
         for (int index = 0; index < size; index++) {
             EventWrapper eventWrapper = wrappers.get(index);
             if (!wrapper.isFromModule(eventWrapper.getEvent().getClass())) {

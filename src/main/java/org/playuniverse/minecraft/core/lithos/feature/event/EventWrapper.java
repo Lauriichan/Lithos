@@ -6,7 +6,7 @@ import org.playuniverse.minecraft.mcs.spigot.utils.general.tick.Ticker;
 
 public final class EventWrapper implements Comparable<EventWrapper>, ITickReceiver {
 
-    private final IFeatureEvent event;
+    private final IFeatureEventExtension event;
 
     private final String name;
     private final Ticker ticker;
@@ -16,7 +16,7 @@ public final class EventWrapper implements Comparable<EventWrapper>, ITickReceiv
 
     private boolean running = false;
 
-    public EventWrapper(IFeatureEvent event) {
+    public EventWrapper(IFeatureEventExtension event) {
         this.event = event;
         this.chance = event.additive(-1);
         this.name = event.getClass().getTypeName();
@@ -29,7 +29,7 @@ public final class EventWrapper implements Comparable<EventWrapper>, ITickReceiv
         return name;
     }
 
-    protected IFeatureEvent getEvent() {
+    protected IFeatureEventExtension getEvent() {
         return event;
     }
 

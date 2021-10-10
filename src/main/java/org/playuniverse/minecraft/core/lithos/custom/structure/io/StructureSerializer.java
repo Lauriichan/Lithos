@@ -9,13 +9,16 @@ import org.playuniverse.minecraft.core.lithos.custom.structure.util.Position;
 import org.playuniverse.minecraft.core.lithos.io.IDataExtension;
 import org.playuniverse.minecraft.core.lithos.io.TypeId;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtCompound;
+import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtIntArray;
+import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtString;
+import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtList;
 
 import com.syntaxphoenix.avinity.module.extension.Extension;
 
 import static org.playuniverse.minecraft.core.lithos.util.BitHelper.*;
 
 @Extension
-@TypeId(input = StructurePool.class, output = NbtCompound.class)
+@TypeId(name = "structure_pool", input = StructurePool.class, output = NbtCompound.class)
 public final class StructureSerializer implements IDataExtension<StructurePool, NbtCompound> {
 
     @Override
@@ -38,9 +41,15 @@ public final class StructureSerializer implements IDataExtension<StructurePool, 
                 list.add(data);
             }
             int posId = position.toId();
-            blocks[index++] = posId << 11 | merge11Bit(id);
+            blocks[index++] = posId << 11 | merge11BitUnsigned(id);
         }
-        return null;
+        NbtList<NbtString> out = new NbtList<>();
+        for(String value : list) {
+            out.add(new NbtString(value));
+        }
+        compound.set("ids", out);
+        compound.set("blocks", new NbtIntArray(blocks));
+        return compound;
     }
 
 }

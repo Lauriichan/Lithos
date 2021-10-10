@@ -12,14 +12,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTables;
 import org.playuniverse.minecraft.core.lithos.feature.event.EventInfo;
-import org.playuniverse.minecraft.core.lithos.feature.event.IFeatureEvent;
+import org.playuniverse.minecraft.core.lithos.feature.event.IFeatureEventExtension;
 import org.playuniverse.minecraft.mcs.shaded.syapi.random.NumberGeneratorType;
 import org.playuniverse.minecraft.mcs.shaded.syapi.random.RandomNumberGenerator;
 
 import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
-public final class BrokenConveyor implements IFeatureEvent {
+public final class BrokenConveyor implements IFeatureEventExtension {
 
     private final LootTables[] lootTables = LootTables.values();
     private final Location location = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
