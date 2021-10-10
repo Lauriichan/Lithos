@@ -30,6 +30,20 @@ public final class StructurePool {
         return name;
     }
 
+    public boolean isBuild(Location location) {
+        for (Rotation rotation : Rotation.values()) {
+            if (!isBuild(location, rotation)) {
+                continue;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isBuild(Location location, Rotation rotation) {
+        return getStructure(rotation).isBuild(location);
+    }
+
     public Structure getStructure(Rotation rotation) {
         return structures.computeIfAbsent(rotation, input -> new Structure(this, rotation).create());
     }

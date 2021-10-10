@@ -2,6 +2,10 @@ package org.playuniverse.minecraft.core.lithos.custom.structure;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.data.BlockData;
 import org.playuniverse.minecraft.core.lithos.custom.structure.util.Position;
 import org.playuniverse.minecraft.core.lithos.custom.structure.util.Rotation;
 
@@ -27,6 +31,27 @@ public final class Structure {
 
     public Rotation getRotation() {
         return rotation;
+    }
+
+    public boolean isBuild(Location location) {
+        World world = location.getWorld();
+        Position origin = new Position(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        Position[] positions = map.keySet().toArray(Position[]::new);
+        HashMap<String, BlockData> cache = new HashMap<>();
+        for (Position position : positions) {
+            StructureBlockData data = map.get(position);
+            if (data == null) {
+                continue;
+            }
+            BlockData bukkitData = cache.computeIfAbsent(data.asBlockData(), Bukkit::createBlockData);
+            BlockData blockData = world.getBlockAt(position.getX(origin), position.getY(origin), position.getZ(origin)).getBlockData();
+            if (!bukkitData.matches(blockData)) {
+                cache.clear();
+                return false;
+            }
+        }
+        cache.clear();
+        return true;
     }
 
     Structure create() {
