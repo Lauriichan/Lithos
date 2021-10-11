@@ -17,7 +17,12 @@ public final class CraftingListener implements IListenerExtension {
         if(event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
-        
+        /*
+         * TODO(Lauriichan): 
+         * 
+         * Find out how to actually detect the items (see in previous projects)
+         * And how to trigger the crafting mechanism
+         */
     }
 
 }
