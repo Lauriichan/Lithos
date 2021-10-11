@@ -27,7 +27,7 @@ public final class StructureHandler {
 
     public StructureHandler(final IOHandler ioHandler, final File folder) {
         this.ioHandler = ioHandler;
-        this.folder = Files.createFolder(new File(folder, "structures"));
+        this.folder = new File(folder, "structures");
     }
 
     /*
@@ -84,6 +84,7 @@ public final class StructureHandler {
 
     public void load() {
         pools.clear();
+        Files.createFolder(folder);
         for (final File file : folder.listFiles()) {
             if (!file.getName().endsWith(".nbt")) {
                 continue;
@@ -104,6 +105,9 @@ public final class StructureHandler {
                 continue;
             }
             final StructurePool pool = (StructurePool) object;
+            if (!pools.containsKey(pool.getName())) {
+                continue;
+            }
             pools.put(pool.getName(), pool);
         }
     }

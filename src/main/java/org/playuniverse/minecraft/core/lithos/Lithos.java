@@ -1,5 +1,6 @@
 package org.playuniverse.minecraft.core.lithos;
 
+import org.playuniverse.minecraft.core.lithos.custom.craft.CraftingHandler;
 import org.playuniverse.minecraft.core.lithos.custom.structure.StructureHandler;
 import org.playuniverse.minecraft.core.lithos.economy.EconomyHandler;
 import org.playuniverse.minecraft.core.lithos.feature.Feature;
@@ -18,11 +19,13 @@ public final class Lithos extends SpigotCoreModule {
     private final IOHandler ioHandler = new IOHandler();
 
     private StructureHandler structureHandler;
+    private CraftingHandler craftingHandler;
     private EconomyHandler economyHandler;
 
     @Override
     protected void onLoad() {
         structureHandler = new StructureHandler(ioHandler, getDataLocation());
+        craftingHandler = new CraftingHandler(ioHandler, structureHandler, getDataLocation());
         economyHandler = new EconomyHandler(ioHandler, getDataLocation());
 
         final PlaceholderStore store = getDefaultPlaceholders();
@@ -61,6 +64,7 @@ public final class Lithos extends SpigotCoreModule {
 
     private void loadData() {
         structureHandler.load();
+        craftingHandler.load();
         economyHandler.load();
     }
     
@@ -82,6 +86,10 @@ public final class Lithos extends SpigotCoreModule {
 
     public StructureHandler getStructureHandler() {
         return structureHandler;
+    }
+    
+    public CraftingHandler getCraftingHandler() {
+        return craftingHandler;
     }
 
     public EconomyHandler getEconomyHandler() {

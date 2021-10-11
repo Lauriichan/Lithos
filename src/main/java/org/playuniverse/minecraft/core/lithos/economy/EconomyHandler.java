@@ -40,7 +40,7 @@ public final class EconomyHandler {
 
     public EconomyHandler(final IOHandler ioHandler, final File folder) {
         this.ioHandler = ioHandler;
-        this.folder = Files.createFolder(new File(folder, "economy"));
+        this.folder = new File(folder, "economy");
     }
 
     /*
@@ -49,6 +49,7 @@ public final class EconomyHandler {
 
     public void load() {
         banks.clear();
+        Files.createFolder(folder);
         for (final File file : folder.listFiles()) {
             if (!file.getName().endsWith(".nbt")) {
                 continue;

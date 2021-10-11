@@ -32,7 +32,7 @@ public final class CraftingStationDeserializer implements IDataExtension<JsonObj
         CraftingStation station = new CraftingStation(input.get("name").getValue().toString());
         JsonArray array = (JsonArray) input.get("recipes");
         for (JsonValue<?> value : array) {
-            if (value.getType() != ValueType.OBJECT) {
+            if (!value.hasType(ValueType.OBJECT)) {
                 continue;
             }
             Object object = ioHandler.deserializeJson((JsonObject) value);
