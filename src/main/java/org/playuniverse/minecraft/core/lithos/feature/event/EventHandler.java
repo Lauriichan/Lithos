@@ -34,7 +34,7 @@ public final class EventHandler extends Feature {
 
     @Override
     protected void onTick(final long deltaTime) {
-        if (eventRandom.nextInt() > chance) {
+        if (eventRandom.nextInt(Integer.MAX_VALUE) > chance) {
             chance += additive();
             passed++;
             return;

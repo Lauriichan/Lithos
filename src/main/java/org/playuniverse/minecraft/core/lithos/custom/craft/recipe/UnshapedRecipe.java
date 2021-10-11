@@ -14,7 +14,7 @@ public final class UnshapedRecipe implements IRecipe {
     public UnshapedRecipe(ItemStack result) {
         this.result = result;
     }
-    
+
     public ArrayList<IIngredient> getIngredients() {
         return ingredients;
     }
@@ -50,6 +50,19 @@ public final class UnshapedRecipe implements IRecipe {
         return new ItemStack[] {
             getResult()
         };
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("[result:");
+        builder.append(result.toString());
+        builder.append(",ingredients:[");
+        for (IIngredient ingredient : ingredients) {
+            builder.append(ingredient.toString());
+            builder.append(',');
+        }
+        return ingredients.isEmpty() ? builder.append("]]").toString() : builder.substring(0, builder.length() - 1) + "]]";
     }
 
 }

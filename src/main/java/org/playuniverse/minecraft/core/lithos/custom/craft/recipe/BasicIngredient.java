@@ -34,4 +34,9 @@ public final class BasicIngredient implements IIngredient {
         stack.setAmount(stack.getAmount() - amount);
     }
 
+    @Override
+    public String toString() {
+        return "{material:" + material.name() + ",amount:" + amount + "}";
+    }
+
 }

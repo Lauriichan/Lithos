@@ -24,6 +24,7 @@ public final class CraftingStation {
         if(recipes.contains(recipe)) {
             return;
         }
+        System.out.println(recipe.toString());
         recipes.add(recipe);
     }
     

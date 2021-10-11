@@ -43,10 +43,10 @@ public final class UnshapedRecipeDeserializer implements IDataExtension<JsonObje
             return null; // Invalid data
         }
         UnshapedRecipe recipe = new UnshapedRecipe(itemStack);
-        ArrayList<IIngredient> ingredients = new ArrayList<>();
+        ArrayList<IIngredient> ingredients = recipe.getIngredients();
         JsonArray array = (JsonArray) input.get("ingredients");
         for (JsonValue<?> value : array) {
-            if (value.getType() != ValueType.OBJECT) {
+            if (!value.hasType(ValueType.OBJECT)) {
                 continue;
             }
             Object object = ioHandler.deserializeJson((JsonObject) value);

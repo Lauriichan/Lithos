@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+import org.bukkit.Location;
 import org.playuniverse.minecraft.core.lithos.custom.structure.StructureHandler;
 import org.playuniverse.minecraft.core.lithos.io.IOHandler;
 import org.playuniverse.minecraft.mcs.shaded.syapi.json.JsonObject;
@@ -28,6 +29,15 @@ public final class CraftingHandler {
         this.folder = new File(folder, "crafting");
         this.ioHandler = ioHandler;
         this.structureHandler = structureHandler;
+    }
+    
+    public CraftingStation getStation(Location location) {
+        for(CraftingStation station : stations.values()) {
+            if(station.isBuild(this, location)) {
+                return station;
+            }
+        }
+        return null;
     }
 
     public StructureHandler getStructureHandler() {

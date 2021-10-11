@@ -105,7 +105,7 @@ public final class StructureHandler {
                 continue;
             }
             final StructurePool pool = (StructurePool) object;
-            if (!pools.containsKey(pool.getName())) {
+            if (pools.containsKey(pool.getName())) {
                 continue;
             }
             pools.put(pool.getName(), pool);
