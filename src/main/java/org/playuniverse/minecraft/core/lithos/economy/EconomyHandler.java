@@ -27,7 +27,7 @@ public final class EconomyHandler {
     private static final ItemStack TEN = ItemEditor.of(Material.GOLD_INGOT).setModel(8).name().add("&6&bGold").apply().asItemStack();
     private static final ItemStack HUNDRED = ItemEditor.of(Material.GOLD_BLOCK).setModel(8).name().add("&6&bGold").apply().asItemStack();
 
-    private static final ItemStack[] VALUES = {
+    public static final ItemStack[] VALUES = {
         ONE,
         TEN,
         HUNDRED
