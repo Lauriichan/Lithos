@@ -31,7 +31,7 @@ public final class Lithos extends SpigotCoreModule {
         final PlaceholderStore store = getDefaultPlaceholders();
         store.setPlaceholder(Placeholder.of("prefix", "&cLithos &8" + UniCode.ARROWS_RIGHT + "&7"));
     }
-
+    
     @Override
     protected void onServerReady() {
         registerExtensions();
