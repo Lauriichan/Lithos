@@ -12,7 +12,7 @@ public final class BasicIngredient implements IIngredient {
     private final int amount;
 
     public BasicIngredient(Material material, int amount, boolean ignoreDurability) {
-        this.ignoreDurability = ignoreDurability && material.getMaxDurability() > 0;
+        this.ignoreDurability = !ignoreDurability && material.getMaxDurability() > 0;
         this.material = material;
         this.amount = amount;
     }
