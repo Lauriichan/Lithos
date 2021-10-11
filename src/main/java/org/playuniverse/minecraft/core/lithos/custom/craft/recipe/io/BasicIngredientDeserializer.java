@@ -24,7 +24,8 @@ public final class BasicIngredientDeserializer implements IDataExtension<JsonObj
         } catch (IllegalArgumentException exp) {
             return null;
         }
-        return new BasicIngredient(material, ((Number) input.get("amount").getValue()).intValue());
+        boolean ignoreDurability = input.has("durability", ValueType.BOOLEAN) ? !((boolean) input.get("durability").getValue()) : true;
+        return new BasicIngredient(material, ((Number) input.get("amount").getValue()).intValue(), ignoreDurability);
     }
 
 }

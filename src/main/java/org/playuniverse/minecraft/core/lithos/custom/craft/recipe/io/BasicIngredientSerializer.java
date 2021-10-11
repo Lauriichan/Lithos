@@ -16,6 +16,7 @@ public final class BasicIngredientSerializer implements IDataExtension<BasicIngr
         JsonObject object = new JsonObject();
         object.set("material", input.getMaterial().name().toLowerCase());
         object.set("amount", input.getAmount());
+        object.set("durability", !input.isDurabilityIgnored());
         return object;
     }
 

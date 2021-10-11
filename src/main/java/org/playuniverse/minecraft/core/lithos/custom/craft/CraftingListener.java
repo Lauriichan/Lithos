@@ -13,6 +13,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 import org.playuniverse.minecraft.core.lithos.Lithos;
 import org.playuniverse.minecraft.core.lithos.util.cooldown.CooldownQueue;
 import org.playuniverse.minecraft.mcs.shaded.syapi.event.EventHandler;
@@ -98,7 +99,7 @@ public final class CraftingListener implements IListenerExtension {
         items.clear();
         World world = location.getWorld();
         for (ItemStack result : results) {
-            world.dropItem(center, result);
+            world.dropItem(center, result).setVelocity(new Vector(0, 0, 0));
         }
     }
 
