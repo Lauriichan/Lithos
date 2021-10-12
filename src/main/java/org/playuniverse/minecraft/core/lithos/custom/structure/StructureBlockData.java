@@ -1,9 +1,13 @@
 package org.playuniverse.minecraft.core.lithos.custom.structure;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.bukkit.block.data.BlockData;
@@ -88,7 +92,11 @@ public final class StructureBlockData {
     }
 
     public StructureBlockData rotate(final int amount) {
-        return mapRotation(rotation -> rotation.rotate(amount)).mapAxis(axis -> axis.rotate(amount));
+        return mapRotation(rotation -> rotation.rotate(amount)).mapAxis(axis -> axis.rotate(amount)).mapSides(rotations -> {
+            for (int index = 0; index < rotations.length; index++) {
+                rotations[index] = rotations[index].rotate(amount);
+            }
+        });
     }
 
     public StructureBlockData apply(final Rotation rotation) {
@@ -115,6 +123,37 @@ public final class StructureBlockData {
 
     public Axis getAxis() {
         return has("axis") ? Axis.fromString(get("axis")) : null;
+    }
+
+    public StructureBlockData applySides(final Rotation[] rotations) {
+        List<Rotation> list = Arrays.asList(rotations);
+        for (Rotation rotation : Rotation.values()) {
+            put(rotation.name().toLowerCase(), Boolean.toString(list.contains(rotation)));
+        }
+        return this;
+    }
+
+    public StructureBlockData mapSides(final Consumer<Rotation[]> mapper) {
+        Rotation[] sides = getSides();
+        if (sides == null) {
+            return this;
+        }
+        mapper.accept(sides);
+        return applySides(sides);
+    }
+
+    public Rotation[] getSides() {
+        if (!has("north")) {
+            return null;
+        }
+        ArrayList<Rotation> list = new ArrayList<>();
+        for (Rotation rotation : Rotation.values()) {
+            if (get(rotation.name().toLowerCase()).equals("false")) {
+                continue;
+            }
+            list.add(rotation);
+        }
+        return list.toArray(Rotation[]::new);
     }
 
     public boolean has(final String state) {

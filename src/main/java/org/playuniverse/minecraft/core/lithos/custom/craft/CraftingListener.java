@@ -41,6 +41,7 @@ public final class CraftingListener implements IListenerExtension {
 
     public CraftingListener(ModuleWrapper<Lithos> wrapper) {
         this.handler = wrapper.getModule().getCraftingHandler();
+        cooldown.setCooldown(2);
         ticker.setLength(50);
         ticker.add(craftTicker);
     }
@@ -80,6 +81,10 @@ public final class CraftingListener implements IListenerExtension {
             items.add(item);
             item.setPickupDelay(Integer.MAX_VALUE);
             item.setPersistent(true);
+            Location itemLoc = item.getLocation();
+            itemLoc.setX(center.getX());
+            itemLoc.setZ(center.getZ());
+            item.teleport(itemLoc);
             stacks.add(item.getItemStack().clone());
         }
         if (stacks.isEmpty()) {

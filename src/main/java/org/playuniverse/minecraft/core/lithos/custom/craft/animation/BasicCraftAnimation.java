@@ -36,7 +36,7 @@ public final class BasicCraftAnimation implements ICraftAnimation {
     @Override
     public void step(CraftProcess process) {
         Location location = process.getCenter();
-        location.getWorld().spawnParticle(Particle.CRIT, location, 3, 0.2, 0.2, 0.2);
+        location.getWorld().spawnParticle(Particle.CRIT, location, 1, 0.15, 0.15, 0.15, 0);
     }
 
 }
