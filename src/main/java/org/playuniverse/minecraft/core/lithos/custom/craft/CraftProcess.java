@@ -7,6 +7,8 @@ import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.playuniverse.minecraft.core.lithos.custom.craft.animation.ICraftAnimation;
 import org.playuniverse.minecraft.mcs.spigot.data.properties.IProperties;
+import org.playuniverse.minecraft.mcs.spigot.helper.task.TaskHelper;
+import org.playuniverse.minecraft.mcs.spigot.utils.wait.Awaiter;
 
 public final class CraftProcess {
 
@@ -59,9 +61,11 @@ public final class CraftProcess {
 
     public boolean step() {
         if (time-- == 0) {
-            for (ICraftAnimation animation : animations) {
-                animation.finish(this);
-            }
+            Awaiter.of(TaskHelper.runSync(() -> {
+                for (ICraftAnimation animation : animations) {
+                    animation.finish(this);
+                }
+            })).await();
             return false;
         }
         for (ICraftAnimation animation : animations) {

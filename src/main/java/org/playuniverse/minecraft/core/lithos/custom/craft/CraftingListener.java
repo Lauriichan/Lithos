@@ -30,7 +30,7 @@ public final class CraftingListener implements IListenerExtension {
 
     private static final Predicate<Entity> ITEM_PREDICATE = (entity) -> entity.getType() == EntityType.DROPPED_ITEM;
 
-    private final CooldownQueue<UUID> cooldown = new CooldownQueue<>(25);
+    private final CooldownQueue<UUID> cooldown = new CooldownQueue<>(50);
     private final CraftingHandler handler;
 
     final HashMap<Location, CraftProcess> processes = new HashMap<>();
