@@ -2,24 +2,24 @@ package org.playuniverse.minecraft.core.lithos.custom.craft;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.function.Predicate;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 import org.playuniverse.minecraft.core.lithos.Lithos;
 import org.playuniverse.minecraft.core.lithos.util.cooldown.CooldownQueue;
 import org.playuniverse.minecraft.mcs.shaded.syapi.event.EventHandler;
 import org.playuniverse.minecraft.mcs.spigot.language.MessageWrapper;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.info.EventInfo;
+import org.playuniverse.minecraft.mcs.spigot.utils.general.tick.Ticker;
 
 import com.syntaxphoenix.avinity.module.ModuleWrapper;
 import com.syntaxphoenix.avinity.module.extension.Extension;
@@ -33,8 +33,16 @@ public final class CraftingListener implements IListenerExtension {
     private final CooldownQueue<UUID> cooldown = new CooldownQueue<>(25);
     private final CraftingHandler handler;
 
+    final HashMap<Location, CraftProcess> processes = new HashMap<>();
+    final ArrayList<Location> stations = new ArrayList<>();
+
+    private final Ticker ticker = new Ticker("CraftTick");
+    private final CraftTicker craftTicker = new CraftTicker(this);
+
     public CraftingListener(ModuleWrapper<Lithos> wrapper) {
         this.handler = wrapper.getModule().getCraftingHandler();
+        ticker.setLength(50);
+        ticker.add(craftTicker);
     }
 
     @EventHandler
@@ -52,6 +60,10 @@ public final class CraftingListener implements IListenerExtension {
         }
         event.setCancelled(true);
         MessageWrapper<?> wrapper = MessageWrapper.of(event.getPlayer());
+        if (stations.contains(location)) {
+            wrapper.send("$prefix Diese Struktur craftet bereits etwas!");
+            return;
+        }
         Location center = location.clone().add(0.5, 1.5, 0.5);
         Collection<Entity> collection = location.getWorld().getNearbyEntities(center, 0.5, 0.5, 0.5, ITEM_PREDICATE);
         if (collection.isEmpty()) {
@@ -86,21 +98,8 @@ public final class CraftingListener implements IListenerExtension {
             wrapper.send("$prefix Es gibt kein Rezept, das an dieser Struktur mit diesen Zutaten gecraftet werden kann!");
             return;
         }
-        for (int index = 0; index < ingredients.length; index++) {
-            if (ingredients[index].getAmount() == 0) {
-                items.get(index).remove();
-                continue;
-            }
-            Item item = items.get(index);
-            item.setItemStack(ingredients[index]);
-            item.setPickupDelay(4);
-            item.setPersistent(false);
-        }
-        items.clear();
-        World world = location.getWorld();
-        for (ItemStack result : results) {
-            world.dropItem(center, result).setVelocity(new Vector(0, 0, 0));
-        }
+        processes.put(location, new CraftProcess(station, location, center, items, ingredients, results));
+        stations.add(location);
     }
 
 }

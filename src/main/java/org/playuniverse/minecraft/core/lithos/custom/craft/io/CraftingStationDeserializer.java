@@ -2,6 +2,8 @@ package org.playuniverse.minecraft.core.lithos.custom.craft.io;
 
 import org.playuniverse.minecraft.core.lithos.Lithos;
 import org.playuniverse.minecraft.core.lithos.custom.craft.CraftingStation;
+import org.playuniverse.minecraft.core.lithos.custom.craft.animation.BasicCraftAnimation;
+import org.playuniverse.minecraft.core.lithos.custom.craft.animation.ICraftAnimation;
 import org.playuniverse.minecraft.core.lithos.custom.craft.recipe.IRecipe;
 import org.playuniverse.minecraft.core.lithos.io.IDataExtension;
 import org.playuniverse.minecraft.core.lithos.io.IOHandler;
@@ -26,20 +28,39 @@ public final class CraftingStationDeserializer implements IDataExtension<JsonObj
 
     @Override
     public CraftingStation convert(JsonObject input) {
-        if (!input.has("name", ValueType.STRING) || !input.has("recipes", ValueType.ARRAY)) {
+        if (!input.has("name", ValueType.STRING)) {
             return null;
         }
-        CraftingStation station = new CraftingStation(input.get("name").getValue().toString());
-        JsonArray array = (JsonArray) input.get("recipes");
-        for (JsonValue<?> value : array) {
-            if (!value.hasType(ValueType.OBJECT)) {
-                continue;
+        int time = input.has("time", ValueType.NUMBER) ? Math.abs(((Number) input.get("time").getValue()).intValue()) : 0;
+        CraftingStation station = new CraftingStation(input.get("name").getValue().toString(), time);
+        if (input.has("recipes", ValueType.ARRAY)) {
+            JsonArray array = (JsonArray) input.get("recipes");
+            for (JsonValue<?> value : array) {
+                if (!value.hasType(ValueType.OBJECT)) {
+                    continue;
+                }
+                Object object = ioHandler.deserializeJson((JsonObject) value);
+                if (object == null || !(object instanceof IRecipe)) {
+                    continue;
+                }
+                station.add((IRecipe) object);
             }
-            Object object = ioHandler.deserializeJson((JsonObject) value);
-            if (object == null || !(object instanceof IRecipe)) {
-                continue;
+        }
+        if (input.has("animations", ValueType.ARRAY)) {
+            JsonArray array = (JsonArray) input.get("animations");
+            for (JsonValue<?> value : array) {
+                if (!value.hasType(ValueType.OBJECT)) {
+                    continue;
+                }
+                Object object = ioHandler.deserializeJson((JsonObject) value);
+                if (object == null || !(object instanceof ICraftAnimation)) {
+                    continue;
+                }
+                station.add((ICraftAnimation) object);
             }
-            station.add((IRecipe) object);
+        }
+        if (station.getAnimations().length == 0) {
+            station.add(new BasicCraftAnimation());
         }
         return station;
     }

@@ -18,7 +18,7 @@ import org.playuniverse.minecraft.mcs.shaded.syapi.utils.java.Streams;
 public final class CraftingHandler {
 
     private final JsonParser parser = new JsonParser();
-
+    
     private final StructureHandler structureHandler;
     private final IOHandler ioHandler;
     private final File folder;
