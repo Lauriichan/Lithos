@@ -80,7 +80,7 @@ public final class CraftingListener implements IListenerExtension {
             items.add(item);
             item.setPickupDelay(Integer.MAX_VALUE);
             item.setPersistent(true);
-            stacks.add(item.getItemStack());
+            stacks.add(item.getItemStack().clone());
         }
         if (stacks.isEmpty()) {
             wrapper.send("$prefix Bitte lege Items auf diesen Block um mit dieser Struktur craften zu können!");
