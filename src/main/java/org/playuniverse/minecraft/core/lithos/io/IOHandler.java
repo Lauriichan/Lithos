@@ -37,8 +37,7 @@ public final class IOHandler {
                 if (!wrapper.isFromModule(info.getHandleType())) {
                     continue;
                 }
-                index--;
-                infos.remove(index);
+                infos.remove(index--);
             }
             if (infos.isEmpty()) {
                 map.remove(key);
