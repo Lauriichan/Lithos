@@ -30,7 +30,7 @@ public abstract class Feature implements IExtension {
 
     protected abstract void onTick(long deltaTime);
 
-    protected abstract void onModuleDisable(ModuleWrapper<?> wrapper);
+    protected void onModuleDisable(ModuleWrapper<?> wrapper) {}
 
     public static int[] register(final Lithos lithos) {
         final List<Feature> features = lithos.getModuleManager().getExtensionManager().getExtensions(Feature.class);
