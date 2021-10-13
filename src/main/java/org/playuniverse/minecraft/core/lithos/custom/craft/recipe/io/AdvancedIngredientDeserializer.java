@@ -29,7 +29,7 @@ public final class AdvancedIngredientDeserializer implements IDataExtension<Json
         if (!input.has("item", ValueType.OBJECT) || !input.has("amount", ValueType.NUMBER)) {
             return null;
         }
-        NbtCompound compound = NbtJsonParser.toNbtCompound((JsonObject) input.get("result"));
+        NbtCompound compound = NbtJsonParser.toNbtCompound((JsonObject) input.get("item"));
         ItemStack itemStack = conversion.itemFromCompound(compound);
         if (itemStack == null) {
             return null; // Invalid data
