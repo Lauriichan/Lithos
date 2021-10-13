@@ -46,7 +46,7 @@ final class DataInfo {
 
     @Override
     public int hashCode() {
-        return id.name().hashCode() << 24 | id.input().hashCode() << 12 | id.output().hashCode() << 0;
+        return id.name().hashCode() << 0 | id.input().hashCode() << 12 | id.output().hashCode() << 24;
     }
 
 }

@@ -19,13 +19,17 @@ public final class IOHandler {
     private static final Function<String, ArrayList<DataInfo>> FUNC = ignore -> new ArrayList<>();
 
     private final HashMap<String, ArrayList<DataInfo>> map = new HashMap<>();
-    private final ArrayList<Integer> hashes = new ArrayList<>();
 
     boolean register(final DataInfo info) {
-        if (hashes.contains(info.hashCode())) {
+        final ArrayList<DataInfo> list = map.computeIfAbsent(info.hasId() ? info.getId() : null, FUNC);
+        if (list.contains(info)) {
+            if (list.isEmpty()) {
+                map.remove(info.hasId() ? info.getId() : null);
+            }
             return false;
         }
-        return map.computeIfAbsent(info.hasId() ? info.getId() : null, FUNC).add(info);
+        list.add(info);
+        return true;
     }
 
     public void unregister(final ModuleWrapper<?> wrapper) {
