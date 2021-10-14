@@ -9,13 +9,14 @@ import org.playuniverse.minecraft.mcs.shaded.syapi.logging.LogTypeId;
 import org.playuniverse.minecraft.mcs.spigot.event.base.BukkitEventHandler;
 import org.playuniverse.minecraft.mcs.spigot.language.MessageWrapper;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension;
+import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension.Target;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.info.EventInfo;
 
 import com.syntaxphoenix.avinity.module.ModuleWrapper;
 import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
-@EventInfo
+@EventInfo(target = Target.BUKKIT)
 public final class StructureListener implements IListenerExtension {
 
     private final StructureHandler handler;

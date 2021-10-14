@@ -18,6 +18,7 @@ import org.playuniverse.minecraft.core.lithos.util.cooldown.CooldownQueue;
 import org.playuniverse.minecraft.mcs.shaded.syapi.event.EventHandler;
 import org.playuniverse.minecraft.mcs.spigot.language.MessageWrapper;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension;
+import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension.Target;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.info.EventInfo;
 import org.playuniverse.minecraft.mcs.spigot.utils.general.tick.Ticker;
 
@@ -25,7 +26,7 @@ import com.syntaxphoenix.avinity.module.ModuleWrapper;
 import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
-@EventInfo
+@EventInfo(target = Target.BUKKIT)
 public final class CraftingListener implements IListenerExtension {
 
     private static final Predicate<Entity> ITEM_PREDICATE = (entity) -> entity.getType() == EntityType.DROPPED_ITEM;

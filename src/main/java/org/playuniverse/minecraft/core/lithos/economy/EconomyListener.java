@@ -6,12 +6,13 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 import org.playuniverse.minecraft.mcs.shaded.syapi.event.EventHandler;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension;
+import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension.Target;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.info.EventInfo;
 
 import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
-@EventInfo
+@EventInfo(target = Target.BUKKIT)
 public final class EconomyListener implements IListenerExtension {
 
     @EventHandler
