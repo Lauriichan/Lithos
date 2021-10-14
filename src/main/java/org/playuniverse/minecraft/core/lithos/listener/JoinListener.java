@@ -34,6 +34,8 @@ public final class JoinListener implements IListenerExtension {
             if (npc.getLevel() != null) {
                 npc.loadPosition();
             } else {
+                npc.setName("Alice");
+                npc.setSkin(mojang.getSkinOf("Lauriichan"));
                 Location loc = event.getPlayer().getLocation();
                 npc.setLocation(loc);
                 npc.setRotation(loc.getYaw(), loc.getPitch());
@@ -44,9 +46,6 @@ public final class JoinListener implements IListenerExtension {
             npc.hide(event.getPlayer());
         }
         npc.show(event.getPlayer());
-        npc.setName("Alice");
-        npc.setSkin(mojang.getSkinOf("Lauriichan"));
-        npc.update();
     }
 
 }
