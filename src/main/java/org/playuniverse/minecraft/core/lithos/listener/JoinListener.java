@@ -28,7 +28,7 @@ public final class JoinListener implements IListenerExtension {
             if (npc.getLevel() != null) {
                 npc.loadPosition();
             }
-            npc.update();
+            npc.updateMetadata();
         }
         NmsNpc npc = container.get();
         if (npc.isShown(event.getPlayer())) {
