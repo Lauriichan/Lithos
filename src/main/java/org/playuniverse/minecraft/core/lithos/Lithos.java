@@ -39,6 +39,11 @@ public final class Lithos extends SpigotCoreModule {
     }
     
     @Override
+    protected void onStop() {
+        
+    }
+    
+    @Override
     protected void onUnload() {
         saveData();
     }

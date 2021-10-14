@@ -19,6 +19,9 @@ public abstract class Feature implements IExtension {
 
     public final void setEnabled(final boolean enabled) {
         this.enabled = enabled;
+        if (!enabled) {
+            onStop();
+        }
     }
 
     final void tick(final long deltaTime) {
@@ -29,6 +32,8 @@ public abstract class Feature implements IExtension {
     }
 
     protected abstract void onTick(long deltaTime);
+
+    protected void onStop() {}
 
     protected void onModuleDisable(ModuleWrapper<?> wrapper) {}
 

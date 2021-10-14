@@ -31,6 +31,13 @@ public final class EventHandler extends Feature {
         }
         return wrappers.add(new EventWrapper(event));
     }
+    
+    @Override
+    protected void onStop() {
+        for(final EventWrapper wrapper : wrappers) {
+            wrapper.unload();
+        }
+    }
 
     @Override
     protected void onTick(final long deltaTime) {

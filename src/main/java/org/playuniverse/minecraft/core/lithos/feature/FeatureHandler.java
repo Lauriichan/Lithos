@@ -16,6 +16,13 @@ public final class FeatureHandler implements ITickReceiver {
     public FeatureHandler() {
         ticker.add(this);
     }
+    
+    public void stop() {
+        final Entry<?, ?>[] entries = features.entrySet().toArray(Entry[]::new);
+        for (final Entry<?, ?> entry : entries) {
+            features.remove(entry.getKey()).setEnabled(false);
+        }
+    }
 
     public boolean register(final Feature feature) {
         if (feature == null || features.containsKey(feature.getClass())) {

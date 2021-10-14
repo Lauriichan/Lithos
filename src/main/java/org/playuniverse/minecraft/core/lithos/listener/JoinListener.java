@@ -23,9 +23,9 @@ public final class JoinListener implements IListenerExtension {
     public static final UUID NPC_ID = UUID.fromString("02f816f7-7fc0-4f2e-b7f0-f958356280ab");
 
     private final Container<NmsNpc> container = Container.of();
-    
+
     private final Mojang mojang = new Mojang(null, new DefaultMojangProvider(NPC_ID), new DefaultSkinStore());
-    
+
     @EventHandler
     public void onJoin(final PlayerJoinEvent event) {
         if (container.isEmpty()) {

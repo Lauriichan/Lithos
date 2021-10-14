@@ -80,6 +80,10 @@ public final class EventWrapper implements Comparable<EventWrapper>, ITickReceiv
         event.onStop();
     }
 
+    public void unload() {
+        ticker.stop();
+    }
+    
     @Override
     public int compareTo(final EventWrapper other) {
         return Double.compare(chance, other.chance);
