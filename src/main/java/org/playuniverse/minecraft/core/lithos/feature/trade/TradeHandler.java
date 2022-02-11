@@ -6,7 +6,6 @@ public final class TradeHandler extends Feature {
 
     @Override
     protected void onTick(long deltaTime) {
-        // TODO Auto-generated method stub
 
     }
 
