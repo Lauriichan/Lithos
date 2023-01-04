@@ -3,9 +3,8 @@ package org.playuniverse.minecraft.core.lithos.economy.io;
 import org.playuniverse.minecraft.core.lithos.economy.EconomyBank;
 import org.playuniverse.minecraft.core.lithos.io.IDataExtension;
 import org.playuniverse.minecraft.core.lithos.io.TypeId;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.Extension;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtCompound;
-
-import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
 @TypeId(name = "economy_bank", input = EconomyBank.class, output = NbtCompound.class)

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Function;
 
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.ModuleWrapper;
 import org.playuniverse.minecraft.mcs.shaded.syapi.json.JsonObject;
 import org.playuniverse.minecraft.mcs.shaded.syapi.json.JsonValue;
 import org.playuniverse.minecraft.mcs.shaded.syapi.json.ValueType;
@@ -11,8 +12,6 @@ import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtCompound;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtTag;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtType;
 import org.playuniverse.minecraft.mcs.shaded.syapi.utils.java.tools.Container;
-
-import com.syntaxphoenix.avinity.module.ModuleWrapper;
 
 public final class IOHandler {
 

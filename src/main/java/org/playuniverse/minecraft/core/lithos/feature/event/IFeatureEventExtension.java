@@ -3,9 +3,8 @@ package org.playuniverse.minecraft.core.lithos.feature.event;
 import java.util.List;
 
 import org.playuniverse.minecraft.core.lithos.Lithos;
-
-import com.syntaxphoenix.avinity.module.extension.ExtensionPoint;
-import com.syntaxphoenix.avinity.module.extension.IExtension;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.ExtensionPoint;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.IExtension;
 
 @ExtensionPoint
 public interface IFeatureEventExtension extends IExtension {

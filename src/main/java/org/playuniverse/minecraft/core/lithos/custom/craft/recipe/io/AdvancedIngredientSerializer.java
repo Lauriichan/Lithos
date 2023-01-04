@@ -10,7 +10,7 @@ import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.tools.NbtJsonParser;
 import org.playuniverse.minecraft.vcompat.reflection.BukkitConversion;
 import org.playuniverse.minecraft.vcompat.reflection.VersionControl;
 
-import com.syntaxphoenix.avinity.module.extension.Extension;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.Extension;
 
 @Extension
 @TypeId(name = "ingredient/advanced", input = AdvancedIngredient.class, output = JsonObject.class)

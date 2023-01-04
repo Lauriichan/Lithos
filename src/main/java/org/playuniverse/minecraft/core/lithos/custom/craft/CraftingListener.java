@@ -15,15 +15,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.playuniverse.minecraft.core.lithos.Lithos;
 import org.playuniverse.minecraft.core.lithos.util.cooldown.CooldownQueue;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.ModuleWrapper;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.Extension;
 import org.playuniverse.minecraft.mcs.shaded.syapi.event.EventHandler;
 import org.playuniverse.minecraft.mcs.spigot.language.MessageWrapper;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension.Target;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.info.EventInfo;
 import org.playuniverse.minecraft.mcs.spigot.utils.general.tick.Ticker;
-
-import com.syntaxphoenix.avinity.module.ModuleWrapper;
-import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
 @EventInfo(target = Target.BUKKIT)

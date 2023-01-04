@@ -10,12 +10,11 @@ import org.playuniverse.minecraft.core.lithos.custom.structure.util.Position;
 import org.playuniverse.minecraft.core.lithos.custom.structure.util.Rotation;
 import org.playuniverse.minecraft.core.lithos.io.IDataExtension;
 import org.playuniverse.minecraft.core.lithos.io.TypeId;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.Extension;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtCompound;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtList;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtString;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtType;
-
-import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
 @TypeId(name = "structure_pool", input = NbtCompound.class, output = StructurePool.class)

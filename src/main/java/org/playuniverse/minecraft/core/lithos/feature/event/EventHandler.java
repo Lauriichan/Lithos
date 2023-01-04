@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 import org.playuniverse.minecraft.core.lithos.feature.Feature;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.ModuleWrapper;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.Extension;
 import org.playuniverse.minecraft.mcs.shaded.syapi.random.NumberGeneratorType;
 import org.playuniverse.minecraft.mcs.shaded.syapi.random.RandomNumberGenerator;
-
-import com.syntaxphoenix.avinity.module.ModuleWrapper;
-import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
 public final class EventHandler extends Feature {

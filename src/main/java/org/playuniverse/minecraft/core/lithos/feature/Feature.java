@@ -3,10 +3,9 @@ package org.playuniverse.minecraft.core.lithos.feature;
 import java.util.List;
 
 import org.playuniverse.minecraft.core.lithos.Lithos;
-
-import com.syntaxphoenix.avinity.module.ModuleWrapper;
-import com.syntaxphoenix.avinity.module.extension.ExtensionPoint;
-import com.syntaxphoenix.avinity.module.extension.IExtension;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.ModuleWrapper;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.ExtensionPoint;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.IExtension;
 
 @ExtensionPoint
 public abstract class Feature implements IExtension {

@@ -5,7 +5,7 @@ import org.playuniverse.minecraft.core.lithos.io.IDataExtension;
 import org.playuniverse.minecraft.core.lithos.io.TypeId;
 import org.playuniverse.minecraft.mcs.shaded.syapi.json.JsonObject;
 
-import com.syntaxphoenix.avinity.module.extension.Extension;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.Extension;
 
 @Extension
 @TypeId(name = "ingredient/basic", input = BasicIngredient.class, output = JsonObject.class)

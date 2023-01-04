@@ -1,14 +1,13 @@
 package org.playuniverse.minecraft.core.lithos.listener;
 
 import org.playuniverse.minecraft.core.lithos.Lithos;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.ModuleWrapper;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.event.ModuleDisableEvent;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.Extension;
 import org.playuniverse.minecraft.mcs.shaded.syapi.event.EventHandler;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension.Target;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.info.EventInfo;
-
-import com.syntaxphoenix.avinity.module.ModuleWrapper;
-import com.syntaxphoenix.avinity.module.event.ModuleDisableEvent;
-import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
 @EventInfo(target = Target.SYNTAX)

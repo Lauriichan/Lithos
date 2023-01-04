@@ -3,10 +3,9 @@ package org.playuniverse.minecraft.core.lithos.feature;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.ModuleWrapper;
 import org.playuniverse.minecraft.mcs.spigot.utils.general.tick.ITickReceiver;
 import org.playuniverse.minecraft.mcs.spigot.utils.general.tick.Ticker;
-
-import com.syntaxphoenix.avinity.module.ModuleWrapper;
 
 public final class FeatureHandler implements ITickReceiver {
 

@@ -5,15 +5,14 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.playuniverse.minecraft.core.lithos.Lithos;
 import org.playuniverse.minecraft.core.lithos.custom.structure.StructureHandler;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.ModuleWrapper;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.Extension;
 import org.playuniverse.minecraft.mcs.shaded.syapi.logging.LogTypeId;
 import org.playuniverse.minecraft.mcs.spigot.event.base.BukkitEventHandler;
 import org.playuniverse.minecraft.mcs.spigot.language.MessageWrapper;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.IListenerExtension.Target;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.info.EventInfo;
-
-import com.syntaxphoenix.avinity.module.ModuleWrapper;
-import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
 @EventInfo(target = Target.BUKKIT)

@@ -9,6 +9,8 @@ import org.playuniverse.minecraft.core.lithos.custom.craft.recipe.UnshapedRecipe
 import org.playuniverse.minecraft.core.lithos.io.IDataExtension;
 import org.playuniverse.minecraft.core.lithos.io.IOHandler;
 import org.playuniverse.minecraft.core.lithos.io.TypeId;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.ModuleWrapper;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.Extension;
 import org.playuniverse.minecraft.mcs.shaded.syapi.json.JsonArray;
 import org.playuniverse.minecraft.mcs.shaded.syapi.json.JsonObject;
 import org.playuniverse.minecraft.mcs.shaded.syapi.json.JsonValue;
@@ -17,9 +19,6 @@ import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.NbtCompound;
 import org.playuniverse.minecraft.mcs.shaded.syapi.nbt.tools.NbtJsonParser;
 import org.playuniverse.minecraft.vcompat.reflection.BukkitConversion;
 import org.playuniverse.minecraft.vcompat.reflection.VersionControl;
-
-import com.syntaxphoenix.avinity.module.ModuleWrapper;
-import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
 @TypeId(name = "recipe/unshaped", input = JsonObject.class, output = UnshapedRecipe.class)

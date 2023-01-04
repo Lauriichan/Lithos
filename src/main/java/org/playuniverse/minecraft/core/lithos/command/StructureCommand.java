@@ -1,9 +1,6 @@
 package org.playuniverse.minecraft.core.lithos.command;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.FluidCollisionMode;
@@ -13,7 +10,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Structure;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.structure.UsageMode;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockVector;
 import org.playuniverse.minecraft.core.lithos.Lithos;
@@ -21,18 +17,18 @@ import org.playuniverse.minecraft.core.lithos.custom.structure.StructureBlockDat
 import org.playuniverse.minecraft.core.lithos.custom.structure.StructureHandler;
 import org.playuniverse.minecraft.core.lithos.custom.structure.util.Position;
 import org.playuniverse.minecraft.core.lithos.custom.structure.util.Rotation;
-import org.playuniverse.minecraft.mcs.spigot.command.CommandContext;
-import org.playuniverse.minecraft.mcs.spigot.command.StringReader;
-import org.playuniverse.minecraft.mcs.spigot.command.listener.MinecraftInfo;
-import org.playuniverse.minecraft.mcs.spigot.command.nodes.CommandNode;
-import org.playuniverse.minecraft.mcs.spigot.command.nodes.RootNode;
+import org.playuniverse.minecraft.mcs.shaded.avinity.command.CommandContext;
+import org.playuniverse.minecraft.mcs.shaded.avinity.command.node.Argument;
+import org.playuniverse.minecraft.mcs.shaded.avinity.command.node.Literal;
+import org.playuniverse.minecraft.mcs.shaded.avinity.command.node.Root;
+import org.playuniverse.minecraft.mcs.shaded.avinity.command.type.IArgumentType;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.ModuleWrapper;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.Extension;
+import org.playuniverse.minecraft.mcs.spigot.command.BukkitSource;
 import org.playuniverse.minecraft.mcs.spigot.language.MessageWrapper;
 import org.playuniverse.minecraft.mcs.spigot.language.placeholder.Placeholder;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.ICommandExtension;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.info.CommandInfo;
-
-import com.syntaxphoenix.avinity.module.ModuleWrapper;
-import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
 public final class StructureCommand implements ICommandExtension {
@@ -45,44 +41,30 @@ public final class StructureCommand implements ICommandExtension {
 
     @Override
     @CommandInfo(name = "structure")
-    public RootNode<MinecraftInfo> buildRoot(final String name) {
-        return new CommandNode<>(name, this::execute, this::complete);
+    public Root<BukkitSource> buildRoot(String name) {
+        return Root.<BukkitSource>of(name).argument("name", Argument.at(0, IArgumentType.STRING, false))
+            .append(Literal.<BukkitSource>of("save").argument("rotation", Argument.at(0, IArgumentType.STRING, false))
+                .execute(context -> execute(context, true)))
+            .append(Literal.<BukkitSource>of("paste").argument("rotation", Argument.at(0, IArgumentType.STRING, false))
+                .execute(context -> execute(context, false)));
     }
 
-    public void execute(final CommandContext<MinecraftInfo> context) {
-        final MessageWrapper<?> wrapper = context.getSource().getReceiver();
-        final CommandSender sender = context.getSource().getSender();
-        if (!sender.hasPermission("lithos.structure")) {
+    private void execute(final CommandContext<BukkitSource> context, final boolean save) {
+        final BukkitSource source = context.getSource();
+        final MessageWrapper<?> wrapper = source.getWrapper();
+        if (!source.isPlayer()) {
             wrapper.send("$prefix Du kannst keine Strukturen verwenden!");
             return;
         }
-        if (!(sender instanceof Player)) {
-            wrapper.send("$prefix Dies kann nur ein Spieler ausführen!");
-            return;
-        }
-        final StringReader reader = context.getReader();
-        if (!reader.skipWhitespace().hasNext()) {
-            wrapper.send("$prefix Bitte gebe den Namen der Struktur an");
-            return;
-        }
-        final String name = reader.readUnquoted();
-        if (!reader.skipWhitespace().hasNext()) {
-            wrapper.send("$prefix Bitte gebe die Aktion an die du ausführen willst (save / paste)");
-            return;
-        }
-        final String action = reader.readUnquoted();
-        if (!reader.skipWhitespace().hasNext()) {
-            wrapper.send("$prefix Bitte gebe die Rotation an die du speichern möchtest (NORTH / EAST / SOUTH / WEST)");
-            return;
-        }
-        final String rotationRaw = reader.readUnquoted();
+        final Player player = source.getPlayer();
+        final String name = context.get("name", String.class);
+        final String rotationRaw = context.get("rotation", String.class).toUpperCase();
         final Rotation rotation = Rotation.fromString(rotationRaw);
-        if (!rotation.name().equalsIgnoreCase(rotationRaw)) {
-            wrapper.send("$prefix Bitte gebe eine gültige Rotation an (NORTH / EAST / SOUTH / WEST)");
+        if (!rotation.name().equals(rotationRaw)) {
+            wrapper.send("$prefix Bitte eine valide Rotation an (NORTH / EAST / SOUTH / WEST)");
             return;
         }
-        final Player player = (Player) sender;
-        if ("save".equalsIgnoreCase(action)) {
+        if (save) {
             final Block block = player.getTargetBlockExact(4, FluidCollisionMode.NEVER);
             if (block == null || block.getBlockData().getMaterial() != Material.STRUCTURE_BLOCK) {
                 wrapper.send("$prefix Bitte schaue auf einen Structure Block");
@@ -104,10 +86,6 @@ public final class StructureCommand implements ICommandExtension {
             wrapper.send("$prefix Vorbereitung gespeichert, bitte schlage den Hauptblock der Struktur mit einem Stock");
             return;
         }
-        if (!"paste".equalsIgnoreCase(action)) {
-            wrapper.send("$prefix Bitte gebe eine gültige Aktion an (save / paste)");
-            return;
-        }
         if (!handler.has(name)) {
             wrapper.send(new Placeholder[] {
                 Placeholder.of("name", name)
@@ -117,9 +95,8 @@ public final class StructureCommand implements ICommandExtension {
         wrapper.send(new Placeholder[] {
             Placeholder.of("name", name)
         }, "$prefix Die Struktur '$name' wird geladen...");
-        final HashMap<Position, StructureBlockData> data = new HashMap<>(handler.get(name).getStructure(rotation).getMap()); // Copy in case
-                                                                                                                             // of
-        // changes
+        // Copy in case of changes
+        final HashMap<Position, StructureBlockData> data = new HashMap<>(handler.get(name).getStructure(rotation).getMap());
         final HashMap<String, BlockData> bukkit = new HashMap<>();
         final Location location = player.getLocation();
         final Position origin = new Position(location.getBlockX(), location.getBlockY(), location.getBlockZ());
@@ -130,30 +107,6 @@ public final class StructureCommand implements ICommandExtension {
         wrapper.send(new Placeholder[] {
             Placeholder.of("name", name)
         }, "$prefix Die Struktur '$name' wurde erfolgreich geladen!");
-    }
-
-    public List<String> complete(final CommandContext<MinecraftInfo> context) {
-        final ArrayList<String> list = new ArrayList<>();
-        final StringReader reader = context.getReader();
-        reader.skipWhitespace().readUnquoted();
-        if (!reader.hasNext()) {
-            Collections.addAll(list, handler.getNames());
-            return list;
-        }
-        reader.skipWhitespace().readUnquoted();
-        if (!reader.hasNext()) {
-            list.add("save");
-            list.add("paste");
-            return list;
-        }
-        reader.skipWhitespace().readUnquoted();
-        if (reader.hasNext()) {
-            return list;
-        }
-        for (final Rotation rotation : Rotation.values()) {
-            list.add(rotation.name());
-        }
-        return list;
     }
 
 }

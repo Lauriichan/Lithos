@@ -4,10 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.playuniverse.minecraft.core.lithos.Lithos;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.ExtensionPoint;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.IExtension;
 import org.playuniverse.minecraft.mcs.spigot.module.extension.helper.ExtensionHelper;
-
-import com.syntaxphoenix.avinity.module.extension.ExtensionPoint;
-import com.syntaxphoenix.avinity.module.extension.IExtension;
 
 @ExtensionPoint
 public interface IDataExtension<I, O> extends IExtension {

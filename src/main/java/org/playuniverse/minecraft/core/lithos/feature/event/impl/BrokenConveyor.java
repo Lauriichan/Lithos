@@ -14,11 +14,10 @@ import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTables;
 import org.playuniverse.minecraft.core.lithos.feature.event.EventInfo;
 import org.playuniverse.minecraft.core.lithos.feature.event.IFeatureEventExtension;
+import org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.Extension;
 import org.playuniverse.minecraft.mcs.shaded.syapi.random.NumberGeneratorType;
 import org.playuniverse.minecraft.mcs.shaded.syapi.random.RandomNumberGenerator;
 import org.playuniverse.minecraft.mcs.spigot.helper.task.TaskHelper;
-
-import com.syntaxphoenix.avinity.module.extension.Extension;
 
 @Extension
 public final class BrokenConveyor implements IFeatureEventExtension {
