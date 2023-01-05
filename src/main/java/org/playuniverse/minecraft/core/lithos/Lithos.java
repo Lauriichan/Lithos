@@ -1,15 +1,20 @@
 package org.playuniverse.minecraft.core.lithos;
 
+import java.util.ArrayList;
+
 import org.playuniverse.minecraft.core.lithos.custom.craft.CraftingHandler;
 import org.playuniverse.minecraft.core.lithos.custom.structure.StructureHandler;
 import org.playuniverse.minecraft.core.lithos.io.IDataExtension;
 import org.playuniverse.minecraft.core.lithos.io.IOHandler;
+import org.playuniverse.minecraft.mcs.shaded.syapi.logging.LogTypeId;
 import org.playuniverse.minecraft.mcs.shaded.syapi.utils.java.UniCode;
 import org.playuniverse.minecraft.mcs.spigot.language.placeholder.Placeholder;
 import org.playuniverse.minecraft.mcs.spigot.language.placeholder.PlaceholderStore;
 import org.playuniverse.minecraft.mcs.spigot.module.SpigotCoreModule;
 
 public final class Lithos extends SpigotCoreModule {
+
+    private final ArrayList<Runnable> shutdown = new ArrayList<>();
 
     private final IOHandler ioHandler = new IOHandler();
 
@@ -24,18 +29,27 @@ public final class Lithos extends SpigotCoreModule {
         final PlaceholderStore store = getDefaultPlaceholders();
         store.setPlaceholder(Placeholder.of("prefix", "&cLithos &8" + UniCode.ARROWS_RIGHT + "&7"));
     }
-    
+
     @Override
     protected void onServerReady() {
         registerExtensions();
         loadData();
     }
-    
+
     @Override
     protected void onStop() {
-        
+        Runnable[] actions = shutdown.toArray(Runnable[]::new);
+        shutdown.clear();
+        for (Runnable action : actions) {
+            try {
+                action.run();
+            } catch (Exception exp) {
+                getLogger().log(LogTypeId.WARNING, "Error while shutting down");
+                getLogger().log(LogTypeId.WARNING, exp);
+            }
+        }
     }
-    
+
     @Override
     protected void onUnload() {
         saveData();
@@ -56,12 +70,22 @@ public final class Lithos extends SpigotCoreModule {
         structureHandler.load();
         craftingHandler.load();
     }
-    
+
     /*
      * On Unload
      */
-    
-    private void saveData() {
+
+    private void saveData() {}
+
+    /*
+     * Shutdown helper
+     */
+
+    public void addShutdown(Runnable runnable) {
+        if (runnable == null) {
+            return;
+        }
+        shutdown.add(runnable);
     }
 
     /*
@@ -71,7 +95,7 @@ public final class Lithos extends SpigotCoreModule {
     public StructureHandler getStructureHandler() {
         return structureHandler;
     }
-    
+
     public CraftingHandler getCraftingHandler() {
         return craftingHandler;
     }

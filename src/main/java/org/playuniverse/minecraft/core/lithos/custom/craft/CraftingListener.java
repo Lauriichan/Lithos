@@ -41,9 +41,24 @@ public final class CraftingListener implements IListenerExtension {
 
     public CraftingListener(ModuleWrapper<Lithos> wrapper) {
         this.handler = wrapper.getModule().getCraftingHandler();
+        wrapper.getModule().addShutdown(this::shutdown);
         cooldown.setCooldown(2);
         ticker.setLength(50);
         ticker.add(craftTicker);
+    }
+    
+    public void shutdown() {
+        ticker.stop();
+        cooldown.getTicker().stop();
+        CraftProcess[] processes = this.processes.values().toArray(CraftProcess[]::new);
+        this.processes.clear();
+        for(CraftProcess process : processes) {
+            process.getItems().forEach(item -> {
+                item.setPickupDelay(200);
+                item.setTicksLived(0);
+                item.setPersistent(true);
+            });
+        }
     }
 
     @EventHandler

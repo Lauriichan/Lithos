@@ -15,10 +15,14 @@ public final class CooldownQueue<E> {
     private final HashMap<E, Integer> ticks = new HashMap<>();
 
     private int cooldown = 1;
-
+    
     public CooldownQueue(int time) {
         ticker.setLength(Math.max(10, time));
         ticker.add(tick);
+    }
+
+    public Ticker getTicker() {
+        return ticker;
     }
 
     public int getCooldown() {
