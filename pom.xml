@@ -80,7 +80,7 @@
 					<source>16</source>
 					<target>16</target>
 					<annotationProcessors>
-						<annotationProcessor>com.syntaxphoenix.avinity.module.extension.processor.ExtensionProcessor</annotationProcessor>
+						<annotationProcessor>org.playuniverse.minecraft.mcs.shaded.avinity.module.extension.processor.ExtensionProcessor</annotationProcessor>
 					</annotationProcessors>
 				</configuration>
 			</plugin>
@@ -130,9 +130,9 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+		<!--	<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.8</version><!--$NO-MVN-MAN-VER$ -->
+				<version>1.8</version>
 				<executions>
 					<execution>
 						<phase>install</phase>
@@ -148,7 +148,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 		</plugins>
 		<resources>
 			<resource>
