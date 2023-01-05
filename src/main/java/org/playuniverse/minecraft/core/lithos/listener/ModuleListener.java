@@ -23,8 +23,7 @@ public final class ModuleListener implements IListenerExtension {
     public void onModuleDisable(final ModuleDisableEvent event) {
 
         final ModuleWrapper<?> wrapper = event.getWrapper();
-
-        lithos.getFeatureHandler().unregister(wrapper);
+        
         lithos.getIOHandler().unregister(wrapper);
 
     }
